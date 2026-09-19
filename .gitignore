@@ -8,3 +8,6 @@ data/raw/
 # 나라장터 서비스키(내 PC 전용) — 절대 올리지 않는다
 .env
 .env.*
+
+# 내 PC 자료 갱신 스크립트의 실행 기록(예약 실행 시 만들어짐)
+refresh_local.log
