@@ -82,10 +82,13 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
      <span class="gt"><b>2. 부산광역시교육청·5개 교육지원청·학교(초·중·고)·관계기관</b> <span class="cnt" id="cnt2"></span><br>
      <span class="gd">보조금으로 사업을 집행하는 기관 및 단체</span></span></label>
     <label class="gopt" for="g3"><input id="g3" class="grp" type="checkbox" value="3">
-     <span class="gt"><b>3. 국가기관(대한민국 정부 및 산하기관·단체)</b> <span class="cnt" id="cnt3"></span><br>
-     <span class="gd">정부부처 및 그 밖의 공공기관 등</span></span></label>
+     <span class="gt"><b>3. 부산지역 대학</b> <span class="cnt" id="cnt3"></span><br>
+     <span class="gd">부산에 있는 국립·사립 대학교와 전문대학</span></span></label>
     <label class="gopt" for="g4"><input id="g4" class="grp" type="checkbox" value="4">
-     <span class="gt"><b>4. 기타 기관</b> <span class="cnt" id="cnt4"></span><br>
+     <span class="gt"><b>4. 국가기관(대한민국 정부 및 산하기관·단체)</b> <span class="cnt" id="cnt4"></span><br>
+     <span class="gd">정부부처 및 그 밖의 공공기관 등</span></span></label>
+    <label class="gopt" for="g5"><input id="g5" class="grp" type="checkbox" value="5">
+     <span class="gt"><b>5. 기타 기관</b> <span class="cnt" id="cnt5"></span><br>
      <span class="gd">위에 해당하지 않는 타 기관까지</span></span></label>
     <span id="err-grp" class="err" role="alert" hidden></span>
    </fieldset>
@@ -131,6 +134,8 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 
 <script src="data.js"></script>
 <script src="data_busan.js"></script>
+<script src="data_gu.js"></script>
+<script src="data_univ.js"></script>
 <script src="data_pen.js"></script>
 <script src="app.js"></script>
 <script>
@@ -138,7 +143,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   var $ = function (id) { return document.getElementById(id); };
   // 공개 자료 두 묶음(부산도시공사 CSV · 교육청 학교입찰정보)을 한 목록으로 합친다. data_pen.js가 없어도 동작한다.
   var sources = [window.BUSAN_BIDS];
-  [window.BUSAN_CITY_BIDS, window.PEN_BIDS].forEach(function (x) { if (x && x.rows) sources.push(x); });
+  [window.BUSAN_CITY_BIDS, window.BUSAN_GU_BIDS, window.BUSAN_UNIV_BIDS, window.PEN_BIDS].forEach(function (x) { if (x && x.rows) sources.push(x); });
   var data = { rows: [] };
   sources.forEach(function (s) { data.rows = data.rows.concat(s.rows); });
 
@@ -196,14 +201,14 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 
   var searched = false;   // 검색을 한 번이라도 했으면 「지난 공고 포함」·검색 대상 기관을 바꿀 때 바로 다시 찾는다
 
-  // 검색 대상 기관(1~4) 체크 읽기·쓰기·안내
+  // 검색 대상 기관(1~5) 체크 읽기·쓰기·안내
   function selectedGroups() {
     var out = [];
-    for (var i = 1; i <= 4; i++) if ($('g' + i).checked) out.push(i);
+    for (var i = 1; i <= 5; i++) if ($('g' + i).checked) out.push(i);
     return out;
   }
   function setGroups(list) {
-    for (var i = 1; i <= 4; i++) $('g' + i).checked = list.indexOf(i) !== -1;
+    for (var i = 1; i <= 5; i++) $('g' + i).checked = list.indexOf(i) !== -1;
   }
   function showGroupError(msg) {
     var e = $('err-grp');
@@ -211,7 +216,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   }
   function fillGroupCounts() {
     var c = countByGroup(data.rows);
-    for (var i = 1; i <= 4; i++) {
+    for (var i = 1; i <= 5; i++) {
       $('cnt' + i).textContent = '(이 자료 ' + c[i] + '건)';
       $('cnt' + i).className = 'cnt' + (c[i] === 0 ? ' zero' : '');
     }
@@ -239,7 +244,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 
   $('f').addEventListener('submit', function (e) { e.preventDefault(); search(); });
   $('past').addEventListener('change', function () { if (searched) search(); });
-  for (var gi = 1; gi <= 4; gi++) {
+  for (var gi = 1; gi <= 5; gi++) {
     $('g' + gi).addEventListener('change', function () {
       var gv = validateGroups(selectedGroups());
       showGroupError(gv.ok ? '' : gv.message);   // 검색 전에도 하나도 안 골랐으면 바로 안내

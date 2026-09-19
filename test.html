@@ -12,7 +12,7 @@ li{margin:6px 0}
 <body>
 <h1>부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기 — 단위 테스트 (UT)</h1>
 <p id="sum">검사 중…</p>
-<p class="note">지금까지 <b>R-01</b>의 UT-01a~h 8개, <b>R-02</b>의 UT-02 1개, <b>R-06(검색 대상 기관)</b>의 UT-06a~f 6개, <b>교육청 자료(금액·개찰일 없는 공고)</b>의 UT-08a~b 2개를 넣었습니다. 수집 규칙 UT-07(10개)은 <code>node tools/test_collect_pen.js</code>로 돌립니다. UT-03·04·05(15개)는 해당 요구사항을 구현할 때 추가합니다. 미실행은 통과가 아닙니다.</p>
+<p class="note">지금까지 <b>R-01</b>의 UT-01a~h 8개, <b>R-02</b>의 UT-02 1개, <b>R-06(검색 대상 기관 5종)</b>의 UT-06a~f 6개, <b>교육청 자료(금액·개찰일 없는 공고)</b>의 UT-08a~b 2개를 넣었습니다. 수집 규칙 UT-07(10개)은 <code>node tools/test_collect_pen.js</code>로 돌립니다. UT-03·04·05(15개)는 해당 요구사항을 구현할 때 추가합니다. 미실행은 통과가 아닙니다.</p>
 <ol id="out"></ol>
 <script src="data.js"></script>
 <script src="app.js"></script>
@@ -88,38 +88,38 @@ t('UT-02','빈 조건(키워드 없음 + 금액이 비었거나 기본값 5,000,
     v('', '', '400,000,000').ok === true && v('', '5,000,000', '100,000,000').ok === true;
 });
 
-t('UT-06a', '검색 대상 기관 필터(실제 자료): 「어린이」 + [1]·[1,2] → 2건, [2]·[2,3,4]·[] → 0건, 기관 조건 없음 → 2건', function () {
+t('UT-06a', '검색 대상 기관 필터(실제 자료): 「어린이」 + [1]·[1,2] → 2건, [2]·[2,3,4,5]·[] → 0건, 기관 조건 없음 → 2건', function () {
   var q = function (g) { return filterBids(rows, { keywords: ['어린이'], groups: g }).length; };
-  return q([1]) === 2 && q([1, 2]) === 2 && q([2]) === 0 && q([2, 3, 4]) === 0 && q([]) === 0 && q(undefined) === 2 &&
+  return q([1]) === 2 && q([1, 2]) === 2 && q([2]) === 0 && q([2, 3, 4, 5]) === 0 && q([]) === 0 && q(undefined) === 2 &&
     same(DEFAULT_GROUPS, [1, 2]);
 });
-t('UT-06b', '기관별 공고 수: 실제 자료 {1:134,2:0,3:0,4:0} · 분류 없는 공고는 4번으로 셈', function () {
-  return same(countByGroup(rows), { 1: 134, 2: 0, 3: 0, 4: 0 }) &&
-    same(countByGroup([{ cat: 2 }, { cat: 3 }, { cat: 3 }, {}]), { 1: 0, 2: 1, 3: 2, 4: 1 });
+t('UT-06b', '기관별 공고 수: 실제 자료 {1:134,2:0,3:0,4:0,5:0} · 분류 없는 공고는 5번(기타)으로 셈', function () {
+  return same(countByGroup(rows), { 1: 134, 2: 0, 3: 0, 4: 0, 5: 0 }) &&
+    same(countByGroup([{ cat: 2 }, { cat: 3 }, { cat: 3 }, { cat: 4 }, {}]), { 1: 0, 2: 1, 3: 2, 4: 1, 5: 1 });
 });
 t('UT-06c', '기관을 하나도 안 고르면 NO_GROUP과 안내 문구, 하나라도 고르면 통과', function () {
   var want = { ok: false, code: 'NO_GROUP', message: '검색 대상 기관을 하나 이상 선택해 주세요.' };
   return same(validateGroups([]), want) && same(validateGroups(undefined), want) &&
-    validateGroups([1]).ok === true && validateGroups([4]).ok === true && validateGroups([1, 2]).ok === true;
+    validateGroups([1]).ok === true && validateGroups([5]).ok === true && validateGroups([1, 2]).ok === true;
 });
-t('UT-06d', '기존 수집 자료 분류 → 기관 번호: 교육청 계열 2 · 국립대학교 3 · 사립대학교·전문대학·그 밖 4', function () {
+t('UT-06d', '기존 수집 자료 분류 → 기관 번호: 교육청 계열 2 · 대학(국립·사립·전문대학) 3 · 그 밖·분류 없음 5', function () {
   return pilotGroup('부산광역시교육청 계열', '초등학교') === 2 && pilotGroup('부산광역시교육청 계열', '교육지원청') === 2 &&
-    pilotGroup('대학 계열', '국립대학교') === 3 && pilotGroup('대학 계열', '사립대학교') === 4 &&
-    pilotGroup('대학 계열', '전문대학') === 4 && pilotGroup('', '') === 4 && pilotGroup(undefined, undefined) === 4;
+    pilotGroup('대학 계열', '국립대학교') === 3 && pilotGroup('대학 계열', '사립대학교') === 3 &&
+    pilotGroup('대학 계열', '전문대학') === 3 && pilotGroup('', '') === 5 && pilotGroup(undefined, undefined) === 5;
 });
 t('UT-06e', '공개 자료(data.js) 134건은 모두 부산도시공사·아르피나 = 1번(부산광역시 지방공기업)', function () {
   var orgs = {}; rows.forEach(function (r) { orgs[r.org] = 1; });
   return rows.length === 134 && rows.every(function (r) { return r.cat === 1 && r.org; }) &&
     same(Object.keys(orgs).sort(), ['부산도시공사', '부산도시공사 아르피나']);
 });
-t('UT-06f', '기관 필터 논리(가짜 자료 5건: 1·2·3·4번과 분류 없음): [2,4]→3건 · [3]→1건 · [1,2,3,4]→5건 · 다른 조건과 함께', function () {
+t('UT-06f', '기관 필터 논리(가짜 자료 6건: 1~5번과 분류 없음): [2,4]→2건 · [3]→1건 · [5]→2건(5번+분류 없음) · [1,2,3,4,5]→6건 · 다른 조건과 함께', function () {
   var fake = [
     { title: '가 어린이', price: 9000000, open: '2026-01-01', cat: 1 }, { title: '나 어린이', price: 9000000, open: '2026-01-01', cat: 2 },
     { title: '다 어린이', price: 9000000, open: '2026-01-01', cat: 3 }, { title: '라 어린이', price: 9000000, open: '2026-01-01', cat: 4 },
-    { title: '마 어린이', price: 9000000, open: '2026-01-01' }
+    { title: '마 어린이', price: 9000000, open: '2026-01-01', cat: 5 }, { title: '바 어린이', price: 9000000, open: '2026-01-01' }
   ];
   var q = function (g, more) { return filterBids(fake, Object.assign({ keywords: ['어린이'], groups: g }, more || {})).map(function (r) { return r.title[0]; }).join(''); };
-  return q([2, 4]) === '나라마' && q([3]) === '다' && q([1, 2, 3, 4]) === '가나다라마' && q([1]) === '가' &&
+  return q([2, 4]) === '나라' && q([3]) === '다' && q([5]) === '마바' && q([1, 2, 3, 4, 5]) === '가나다라마바' && q([1]) === '가' &&
     q([1, 2], { min: 10000000 }) === '' && q([1, 2], { excludeClosed: true, baseDate: '2026-02-01' }) === '';
 });
 

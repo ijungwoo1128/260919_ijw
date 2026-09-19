@@ -70,7 +70,7 @@ function filterBids(rows, cond) {
       if (min !== null && !(r.price >= min)) return false;
       if (max !== null && !(r.price <= max)) return false;
     }
-    if (cond.groups && !cond.groups.includes(r.cat ?? 4)) return false;   // 검색 대상 기관: 고른 번호(1~4)에 속한 공고만
+    if (cond.groups && !cond.groups.includes(r.cat ?? 5)) return false;   // 검색 대상 기관: 고른 번호(1~5)에 속한 공고만(분류 없음은 5번 기타)
     if (cond.excludeClosed && daysUntil(r.open, cond.baseDate) < 0) return false;   // 개찰일이 기준일과 같으면 남긴다
     return true;
   });
@@ -125,9 +125,9 @@ function validateConditions(input) {
   return { ok: true };
 }
 
-// ── 검색 대상 기관 4종 (수강생 지정 2026-09-19) ──
+// ── 검색 대상 기관 5종 (수강생 지정 2026-09-19, 「3. 부산지역 대학」 추가로 5종이 됨) ──
 // 1 부산광역시청·16개 구(군)·관계기관(출자출연·지방공기업) / 2 부산광역시교육청·5개 교육지원청·학교(초·중·고)·관계기관
-// 3 국가기관(정부·산하기관·단체) / 4 기타 기관. 기본은 1·2번이다. 각 공고는 `cat`(1~4)로 어느 묶음인지 가진다.
+// 3 부산지역 대학 / 4 국가기관(정부·산하기관·단체) / 5 기타 기관. 기본은 1·2번이다. 각 공고는 `cat`(1~5)로 어느 묶음인지 가진다.
 const DEFAULT_GROUPS = [1, 2];
 const MSG_NO_GROUP = '검색 대상 기관을 하나 이상 선택해 주세요.';
 
@@ -138,16 +138,16 @@ function validateGroups(groups) {
 
 // 자료 안의 공고 수를 기관 번호별로 센다 (화면에서 「이 자료에 몇 건 있는지」를 보여 줄 때 쓴다)
 function countByGroup(rows) {
-  const c = { 1: 0, 2: 0, 3: 0, 4: 0 };
-  for (const r of rows) c[r.cat ?? 4]++;
+  const c = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  for (const r of rows) c[r.cat ?? 5]++;
   return c;
 }
 
-// 기존 수집 자료(비공개)의 분류 → 기관 번호. 교육청 계열은 2, 국립대학교는 3(국가 소속), 사립대학교·전문대학·그 밖은 4
+// 기존 수집 자료(비공개)의 분류 → 기관 번호. 교육청 계열은 2, 대학(국립·사립·전문대학)은 3, 그 밖은 5
 function pilotGroup(category, subCategory) {
   if (/교육청/.test(category || '')) return 2;
-  if (subCategory === '국립대학교') return 3;
-  return 4;
+  if (/대학/.test(category || '') || /대학/.test(subCategory || '')) return 3;
+  return 5;
 }
 
 function sourceLine(meta) {

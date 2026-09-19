@@ -10,7 +10,7 @@ window.BUSAN_CITY_BIDS = {
  "updateNote": "수집할 때마다 갱신",
  "fetched": "2026-09-19",
  "scanned": 475,
- "dropped": 376,
+ "dropped": 379,
  "rows": [
   {
    "no": "2026-2814",
@@ -388,21 +388,6 @@ window.BUSAN_CITY_BIDS = {
    "url": "https://www.busan.go.kr/nbgosi/view?sno=79424&gosiGbn=A"
   },
   {
-   "no": "2026-87",
-   "org": "부산광역시 시민건강국 감염병관리과",
-   "cat": 1,
-   "type": "시청 고시공고",
-   "status": "",
-   "posted": "2026-09-09",
-   "title": "부산광역시 한센병관리사업 위탁에 관한 조례 시행규칙 일부개정 규칙안 입법 예고",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://www.busan.go.kr/nbgosi/view?sno=79460&gosiGbn=A"
-  },
-  {
    "no": "2026-2672",
    "org": "부산광역시 문화국 문화예술과",
    "cat": 1,
@@ -613,21 +598,6 @@ window.BUSAN_CITY_BIDS = {
    "url": "https://www.busan.go.kr/nbgosi/view?sno=79404&gosiGbn=A"
   },
   {
-   "no": "2026-2629",
-   "org": "부산광역시 시민건강국 보건위생과",
-   "cat": 1,
-   "type": "시청 고시공고",
-   "status": "",
-   "posted": "2026-09-03",
-   "title": "계약형 지역필수의사제 지원사업 공공기관 위탁계약 체결 공고",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://www.busan.go.kr/nbgosi/view?sno=79385&gosiGbn=A"
-  },
-  {
    "no": "2026-70",
    "org": "부산광역시 국제수산물유통시설관리사업소 가공단지운영팀",
    "cat": 1,
@@ -806,21 +776,6 @@ window.BUSAN_CITY_BIDS = {
    "price": null,
    "priceNote": "",
    "url": "https://www.busan.go.kr/nbgosi/view?sno=79331&gosiGbn=A"
-  },
-  {
-   "no": "2026-2575",
-   "org": "부산광역시 체육시설관리사업소 구덕운동장",
-   "cat": 1,
-   "type": "시청 고시공고",
-   "status": "",
-   "posted": "2026-08-26",
-   "title": "부산광역시 구덕운동장 씨름장 관리 및 운영 민간위탁 계약 체결 공고",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://www.busan.go.kr/nbgosi/view?sno=79305&gosiGbn=A"
   },
   {
    "no": "2026-2561",

@@ -13,7 +13,7 @@ const iso = (y, m, d) => `${y}-${String(m).padStart(2, '0')}-${String(d).padStar
 
 // 참여·신청할 수 있는 성격의 제목만 남긴다 (포함 규칙 통과 + 제외 규칙에 안 걸림)
 const KEEP_RE = /모집|위탁|수탁|용역|입찰|제안서|제안 |공모|사업자|업체|공급자|참가|참여|지원사업|운영자|수행기관/;
-const DROP_RE = /채용|합격|결과|폐업|과태료|처분|직권말소|공시송달|취소|입법예고|분묘|철회|반환|면허|허가|지정 고시|도시관리계획|서류전형|면접|위원(?!회)|위촉/;
+const DROP_RE = /채용|합격|결과|폐업|과태료|처분|직권말소|공시송달|취소|입법\s*예고|조례|규칙안|계약\s*체결|분묘|철회|반환|면허|허가|지정 고시|도시관리계획|서류전형|면접|위원(?!회)|위촉/;
 const isRelevant = title => KEEP_RE.test(title) && !DROP_RE.test(title);
 
 const clean = s => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
