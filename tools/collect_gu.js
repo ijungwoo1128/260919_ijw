@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isRelevant } = require('./collect_busan.js');
+const { fetchRetry } = require('./net.js');
 
 const GU = {
   중구: 'bsjunggu.go.kr', 서구: 'bsseogu.go.kr', 동구: 'bsdonggu.go.kr', 영도구: 'yeongdo.go.kr', 부산진구: 'busanjin.go.kr',
@@ -65,8 +66,8 @@ async function fetchPage(host, page) {
     not_ancmt_mgt_no: '', homepage_pbs_yn: 'Y', subCheck: 'Y', ofr_pageSize: '10', not_ancmt_se_code: '02', title: '', cha_dep_code_nm: '',
     initValue: '', countYn: 'Y', list_gubun: '', homepagetype: 'new', not_ancmt_sj: '',
   });
-  const res = await fetch(`https://eminwon.${host}/emwp/gov/mogaha/ntis/web/ofr/action/OfrAction.do`, {
-    method: 'POST', headers: { 'User-Agent': UA, 'Content-Type': 'application/x-www-form-urlencoded' }, body, signal: AbortSignal.timeout(20000),
+  const res = await fetchRetry(`https://eminwon.${host}/emwp/gov/mogaha/ntis/web/ofr/action/OfrAction.do`, {
+    method: 'POST', headers: { 'User-Agent': UA, 'Content-Type': 'application/x-www-form-urlencoded' }, body,
   });
   return { status: res.status, html: decode(Buffer.from(await res.arrayBuffer())) };
 }
@@ -117,6 +118,8 @@ async function main() {
     }
     await sleep(DELAY_MS);
   }
+  // 일부 구·군이 실패했는데 저장하면 자료가 줄어든 채 덮어써지므로, 실패가 하나라도 있으면 기존 파일을 그대로 둔다
+  if (Object.keys(failed).length) { console.log(`${Object.keys(failed).length}곳이 실패해 data_gu.js를 바꾸지 않았습니다. 잠시 뒤 다시 실행해 주세요.`); process.exit(2); }
   if (!all.length) { console.log('가져온 공고가 없어 data_gu.js를 바꾸지 않았습니다.'); process.exit(1); }
   const posted = all.map(r => r.posted).sort();
   const meta = {

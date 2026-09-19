@@ -6,6 +6,7 @@
 //       차단(401·403) 응답이 오면 즉시 멈추고 우회하지 않는다.
 const fs = require('fs');
 const path = require('path');
+const { fetchRetry } = require('./net.js');
 
 const BASE = 'https://www.busan.go.kr';
 const DAYS_BACK = 60, MAX_PAGES = 50, DELAY_MS = 1500;
@@ -51,7 +52,7 @@ async function main() {
   const rows = [], seen = new Set();
   let all = 0, dropped = 0, pages = 0;
   for (let p = 1; p <= MAX_PAGES; p++) {
-    const res = await fetch(`${BASE}/nbgosi?curPage=${p}`, { headers: { 'User-Agent': 'Mozilla/5.0 (education-project; low-rate list reader)' } });
+    const res = await fetchRetry(`${BASE}/nbgosi?curPage=${p}`, { headers: { 'User-Agent': 'Mozilla/5.0 (education-project; low-rate list reader)' } });
     if (res.status === 401 || res.status === 403) { console.log(`p${p}: HTTP ${res.status} — 서버가 접속을 막아 멈춥니다(우회하지 않음)`); break; }
     if (!res.ok) { console.log(`p${p}: HTTP ${res.status} — 중단`); break; }
     const items = parseList(decode(Buffer.from(await res.arrayBuffer())));

@@ -1,5 +1,6 @@
 # 월·목 아침(한국 시각 07:00)에 공개 게시판 자료를 다시 모아 저장소에 커밋한다. 커밋이 올라가면 Vercel이 자동으로 다시 배포한다.
-# - 키·로그인이 필요 없는 수집기만 돌린다(교육청·시청·구군·교육지원청·ALIO). 대학 자료(내 PC의 이전 프로젝트 결과)와 나라장터(서비스키)는 여기서 돌리지 않는다.
+# - 여기서 돌리는 것: 교육청 본청·교육지원청·ALIO(GitHub 서버에서도 접속이 되는 것만).
+#   돌리지 않는 것: 부산시청·구군(해외 IP 접속 불가 → 내 PC의 tools/refresh_local.cmd), 대학(내 PC의 이전 프로젝트 결과), 나라장터(서비스키).
 # - 수집기가 실패하면 그 자료 파일은 바뀌지 않는다. 마지막에 검사기(tools/check_data.js)가 형식·개인정보·급감을 확인해, 이상한 파일은 이전 상태로 되돌리고 나머지만 커밋한다.
 # - 사람이 직접 돌리려면 저장소의 Actions 탭 → 「자료 자동 갱신」 → Run workflow.
 name: 자료 자동 갱신
@@ -42,15 +43,8 @@ jobs:
         continue-on-error: true
         run: node tools/collect_pen.js
 
-      - name: 부산광역시청 고시공고
-        id: busan
-        continue-on-error: true
-        run: node tools/collect_busan.js
-
-      - name: 구·군 입찰공고
-        id: gu
-        continue-on-error: true
-        run: node tools/collect_gu.js
+      # 부산광역시청(collect_busan)·구군(collect_gu)은 여기서 돌리지 않는다. GitHub 서버(해외 IP)에서는 접속 시간 초과가 나서
+      # (2026-09-19 시험: 시청 실패, 구군 14곳 모두 UND_ERR_CONNECT_TIMEOUT) 내 PC에서 tools/refresh_local.cmd 로 갱신한다.
 
       - name: 공공기관(ALIO)
         id: alio
@@ -70,7 +64,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data_pen.js data_busan.js data_gu.js data_ofc.js data_alio.js
+          git add data_pen.js data_ofc.js data_alio.js
           if git diff --cached --quiet; then
             echo "changed=no" >> "$GITHUB_OUTPUT"
             echo "바뀐 자료가 없어 커밋하지 않습니다."
@@ -92,8 +86,6 @@ jobs:
             echo "| 수집기 | 결과 |"
             echo "|---|---|"
             echo "| 교육청 본청 | ${{ steps.pen.outcome }} |"
-            echo "| 부산광역시청 | ${{ steps.busan.outcome }} |"
-            echo "| 구·군 | ${{ steps.gu.outcome }} |"
             echo "| 공공기관(ALIO) | ${{ steps.alio.outcome }} |"
             echo "| 5개 교육지원청 | ${{ steps.ofc.outcome }} |"
             echo ""

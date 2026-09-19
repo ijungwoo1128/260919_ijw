@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { parseOpenDate, RESULT_RE } = require('./collect_pen.js');
+const { fetchRetry } = require('./net.js');
 
 const BASE = 'https://home.pen.go.kr';
 const DAYS_BACK = 30, MAX_PAGES = 40, DELAY_MS = 1000;
@@ -83,7 +84,7 @@ const iso = (y, m, d) => `${y}-${String(m).padStart(2, '0')}-${String(d).padStar
 async function collectBoard(b, cutoffIso, known, seen, rows) {
   let scanned = 0, kept = 0, pages = 0;
   for (let p = 1; p <= MAX_PAGES; p++) {
-    const res = await fetch(`${BASE}/${b.slug}/na/ntt/selectNttList.do?mi=${b.mi}&bbsId=${b.bbsId}&currPage=${p}`, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(20000) });
+    const res = await fetchRetry(`${BASE}/${b.slug}/na/ntt/selectNttList.do?mi=${b.mi}&bbsId=${b.bbsId}&currPage=${p}`, { headers: { 'User-Agent': UA } });
     if (res.status === 401 || res.status === 403) throw new Error(`HTTP ${res.status} — 서버가 막아 멈춤(우회하지 않음)`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const items = parseRows(decode(Buffer.from(await res.arrayBuffer())));

@@ -4,6 +4,7 @@
 //       요청 사이에 1.5초를 쉬며, 최근 90일 등록분까지만(최대 60쪽) 가져온다. 본문·첨부는 가져오지 않는다.
 const fs = require('fs');
 const path = require('path');
+const { fetchRetry } = require('./net.js');
 
 const BASE = 'https://www.pen.go.kr';
 const BOARD = { mi: 30514, bbsId: 2407 };
@@ -78,7 +79,7 @@ async function main() {
   let excluded = 0, pages = 0;
   for (let p = 1; p <= MAX_PAGES; p++) {
     const url = `${BASE}/main/na/ntt/selectNttList.do?mi=${BOARD.mi}&bbsId=${BOARD.bbsId}&currPage=${p}`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (education-project; low-rate list reader)' } });
+    const res = await fetchRetry(url, { headers: { 'User-Agent': 'Mozilla/5.0 (education-project; low-rate list reader)' } });
     if (!res.ok) { console.log(`p${p}: HTTP ${res.status} — 중단`); break; }
     const items = parseList(await res.text());
     pages++;
