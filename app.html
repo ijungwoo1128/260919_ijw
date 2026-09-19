@@ -130,6 +130,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 </footer>
 
 <script src="data.js"></script>
+<script src="data_busan.js"></script>
 <script src="data_pen.js"></script>
 <script src="app.js"></script>
 <script>
@@ -137,7 +138,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   var $ = function (id) { return document.getElementById(id); };
   // 공개 자료 두 묶음(부산도시공사 CSV · 교육청 학교입찰정보)을 한 목록으로 합친다. data_pen.js가 없어도 동작한다.
   var sources = [window.BUSAN_BIDS];
-  if (window.PEN_BIDS && window.PEN_BIDS.rows) sources.push(window.PEN_BIDS);
+  [window.BUSAN_CITY_BIDS, window.PEN_BIDS].forEach(function (x) { if (x && x.rows) sources.push(x); });
   var data = { rows: [] };
   sources.forEach(function (s) { data.rows = data.rows.concat(s.rows); });
 
@@ -169,7 +170,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
       var b = document.createElement('div');
       var t = document.createElement('div'); t.className = 't'; t.textContent = r.title;
       var m = document.createElement('div'); m.className = 'm';
-      m.textContent = [r.status === '취소' ? '【취소된 공고】' : '', r.org, r.type, '공고게시일 ' + r.posted, r.open ? (r.openText ? '입찰일시 ' + r.openText : '개찰예정일 ' + r.open) : '입찰일시 ' + (r.openText || '미확인'), formatPrice(r)].filter(Boolean).join(' · ');
+      m.textContent = [r.status === '취소' ? '【취소된 공고】' : '', r.org, r.type, '공고게시일 ' + r.posted, r.openText ? '입찰일시 ' + r.openText : r.open ? '개찰예정일 ' + r.open : '일정은 원문에서 확인', formatPrice(r)].filter(Boolean).join(' · ');
       b.appendChild(t); b.appendChild(m);
       if (r.url) {
         var a = document.createElement('a'); a.className = 'lk'; a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
