@@ -6,6 +6,7 @@
 //       필드가 다르면 rows 가 비거나 오류를 내고 data_g2b.js 를 바꾸지 않는다.
 const fs = require('fs');
 const path = require('path');
+const { fetchRetry } = require('./net.js');
 
 const BASE = 'https://apis.data.go.kr/1230000/ad/BidPublicInfoService';
 const OPS = [['getBidPblancListInfoServc', '용역'], ['getBidPblancListInfoThng', '물품']];   // 공사는 교육 사업과 무관해 제외
@@ -73,7 +74,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function fetchPage(key, op, params, page) {
   const q = new URLSearchParams({ serviceKey: key, pageNo: String(page), numOfRows: String(PAGE_SIZE), type: 'json', inqryDiv: '1', ...params });
-  const res = await fetch(`${BASE}/${op}?${q}`, { signal: AbortSignal.timeout(30000) });
+  const res = await fetchRetry(`${BASE}/${op}?${q}`, {}, { timeoutMs: 30000 });   // 일시적인 연결 오류는 다시 시도(서버가 응답한 오류는 그대로)
   const text = await res.text();
   let json; try { json = JSON.parse(text); } catch { throw new Error(`JSON이 아닌 응답(HTTP ${res.status})`); }
   const err = apiError(json);
@@ -88,12 +89,14 @@ async function main() {
   const today = new Date(), from = new Date(today.getTime() - DAYS_BACK * 86400000);
   const range = { inqryBgnDt: ymd(from) + '0000', inqryEndDt: ymd(today) + '2359' };
   const rows = [], seen = new Set(), failed = {};
+  let rawCount = 0, sample = null;   // 응답 항목 수와 첫 항목(필드 이름 진단용)
   for (const [op, kind] of OPS) {
     for (const field of ['ntceInsttNm', 'dminsttNm']) {   // 공고기관 또는 수요기관 이름에 「부산」이 들어간 공고
       try {
         for (let p = 1; p <= MAX_PAGES; p++) {
           const json = await fetchPage(key, op, { ...range, [field]: '부산' }, p);
           const items = extractItems(json);
+          rawCount += items.length; if (!sample && items[0]) sample = items[0];
           for (const x of items) { const r = toRow(x, kind); if (r.title && r.posted && !seen.has(r.no)) { seen.add(r.no); rows.push(r); } }
           if (items.length < PAGE_SIZE) break;
           await sleep(DELAY_MS);
@@ -103,7 +106,9 @@ async function main() {
       await sleep(DELAY_MS);
     }
   }
-  console.log(`\n나라장터 ${rows.length}건 · 실패 ${Object.keys(failed).length}`);
+  console.log(`\n나라장터 응답 항목 ${rawCount}건 → 공고 ${rows.length}건 · 실패 ${Object.keys(failed).length}`);
+  // 응답은 왔는데 공고로 못 바꿨다면 필드 이름이 예상과 다른 것이다 → 첫 항목의 필드 이름만 보여 준다(값은 찍지 않음)
+  if (rawCount && !rows.length && sample) console.log('  응답 항목의 필드 이름:', Object.keys(sample).join(', '));
   Object.entries(failed).forEach(([k, v]) => console.log('  실패:', k, v));
   if (Object.keys(failed).length || !rows.length) { console.log('data_g2b.js를 바꾸지 않았습니다.'); process.exit(2); }
   rows.sort((a, b) => (a.posted < b.posted ? 1 : -1));
