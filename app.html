@@ -48,6 +48,9 @@ button{font:inherit;font-weight:800;border-radius:12px;min-height:48px;padding:0
 .sharemsg{margin:8px 0 0;font-weight:700;color:var(--teal-d);min-height:1.4em}
 .share summary{cursor:pointer;color:var(--teal-d);font-weight:700;margin-top:6px}
 .share textarea{width:100%;box-sizing:border-box;margin-top:8px;font:14px/1.5 system-ui,'Malgun Gothic',sans-serif;border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink);background:var(--bg)}
+.loaderr{background:#fdecea;border:1px solid #f3c4c0;border-radius:12px;padding:12px 16px;margin:0 0 14px}
+.emptylinks{font-size:14px;margin:6px 0 10px}
+.emptylinks a{color:var(--teal);font-weight:700;margin-right:12px}
 .no{display:inline-block;min-width:2em;color:var(--orange-d);font-weight:800}
 #summary{font-weight:800;font-size:18px;margin:0 0 4px}
 #synnote{font-size:14px;color:var(--teal-d);margin:0 0 6px}
@@ -72,6 +75,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 <div class="head"><div class="wrap"><b>부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기</b><a href="./index.html">← 소개 페이지</a></div></div>
 
 <main class="wrap">
+ <p id="loaderr" class="err loaderr" role="alert" hidden></p>
  <form id="f" class="panel" autocomplete="off">
   <div class="grid">
    <div class="field full">
@@ -106,17 +110,20 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
    </fieldset>
    <div class="field">
     <label for="mn">최소 금액(원) 이상</label>
-    <input id="mn" type="text" inputmode="numeric" value="5,000,000" placeholder="예: 100,000,000">
+    <input id="mn" type="text" inputmode="numeric" value="5,000,000" placeholder="예: 100,000,000" aria-describedby="err-mn">
+    <span id="err-mn" class="err" role="alert" hidden></span>
     <span class="hint">기본값은 5,000,000원 이상입니다. 비우면 최소 제한이 없습니다.</span>
    </div>
    <div class="field">
     <label for="mx">최대 금액(원) 이하</label>
-    <input id="mx" type="text" inputmode="numeric" placeholder="제한 없음 (예: 100,000,000)">
+    <input id="mx" type="text" inputmode="numeric" placeholder="제한 없음 (예: 100,000,000)" aria-describedby="err-mx">
+    <span id="err-mx" class="err" role="alert" hidden></span>
     <span class="hint">비워 두면 제한 없음(무한대)입니다.</span>
    </div>
    <div class="field">
     <label for="bd">기준일</label>
-    <input id="bd" type="text" inputmode="numeric" placeholder="YYYY-MM-DD" maxlength="10">
+    <input id="bd" type="text" inputmode="numeric" placeholder="YYYY-MM-DD" maxlength="10" aria-describedby="err-bd">
+    <span id="err-bd" class="err" role="alert" hidden></span>
     <span class="hint">개찰까지 남은 일수를 이 날짜 기준으로 계산합니다. 기본값은 오늘 날짜입니다.</span>
    </div>
    <div class="field">
@@ -134,6 +141,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
  <section id="res" aria-live="polite" hidden>
   <p id="summary"></p>
   <p id="synnote"></p>
+  <p id="emptylinks" class="emptylinks" hidden></p>
   <div id="share" class="share">
    <div class="sharebtns">
     <button type="button" id="copylink" class="secondary">이 검색 링크 복사</button>
@@ -166,6 +174,14 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
+  // R-03c: data.js(window.BUSAN_BIDS)를 못 불러왔으면 화면 위에 안내를 띄우고 「공고 찾기」를 누를 수 없게 한다
+  var ld = loadData(window.BUSAN_BIDS);
+  if (!ld.ok) {
+    $('loaderr').textContent = ld.message; $('loaderr').hidden = false;
+    document.querySelector('.primary').disabled = true;
+    $('f').addEventListener('submit', function (e) { e.preventDefault(); });   // Enter로 제출돼 페이지가 다시 열리는 것을 막는다
+    return;
+  }
   // 공개 자료 두 묶음(부산도시공사 CSV · 교육청 학교입찰정보)을 한 목록으로 합친다. data_pen.js가 없어도 동작한다.
   var sources = [window.BUSAN_BIDS];
   [window.BUSAN_CITY_BIDS, window.BUSAN_GU_BIDS, window.BUSAN_UNIV_BIDS, window.ALIO_BIDS, window.G2B_BIDS, window.OFC_BIDS, window.PEN_BIDS].forEach(function (x) { if (x && x.rows && x.rows.length) sources.push(x); });   // 자료가 비어 있는 곳(나라장터 수집 전)은 출처 줄에도 넣지 않는다
@@ -180,6 +196,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 
   function clearResults() {
     setAddress('');
+    $('emptylinks').hidden = true;
     $('res').hidden = true;
     $('summary').textContent = '';
     $('synnote').textContent = '';
@@ -191,6 +208,13 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     var e = emptyResultText(!$('past').checked, { hasExclude: exs.length > 0, groupCount: state.groups.length });
     $('summary').textContent = e.title;
     $('synnote').textContent = e.body;
+    var el = $('emptylinks');
+    el.textContent = '다른 곳에서 직접 확인하기: ';
+    EMPTY_LINKS.forEach(function (l) {   // 새 탭으로 열리는 링크 2개
+      var a = document.createElement('a'); a.href = l.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = l.text;
+      el.appendChild(a);
+    });
+    el.hidden = false;
     $('list').textContent = '';
     $('share').hidden = true;
     setAddress(shareQuery(state));
@@ -227,6 +251,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     var link = pageUrl() + (shareQuery(state) ? '?' + shareQuery(state) : '');
     $('sharetext').value = buildShareText({ base: base, items: items, kw: state.kw, ex: state.ex, mn: state.mn, mx: state.mx, past: state.past, groups: state.groups, link: link });
     $('sharemsg').textContent = '';
+    $('emptylinks').hidden = true;
     $('share').hidden = false;
     $('filenote').hidden = location.protocol !== 'file:';
     shareLink = link;
@@ -258,16 +283,22 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     }
   }
 
-  function showError(msg) {
-    var e = $('err-kw');
+  // 오류는 해당 입력 칸 아래에 보인다(field: kw 키워드 · mn 최소 금액 · mx 최대 금액 · bd 기준일)
+  var FIELD = { kw: ['err-kw', 'kw'], mn: ['err-mn', 'mn'], mx: ['err-mx', 'mx'], bd: ['err-bd', 'bd'] };
+  function showError(msg, field) {
+    var f = FIELD[field || 'kw'];
+    var e = $(f[0]);
     e.textContent = msg; e.hidden = false;
-    $('kw').setAttribute('aria-invalid', 'true');
+    $(f[1]).setAttribute('aria-invalid', 'true');
+    $(f[1]).focus();
   }
 
   function hideError() {
-    var e = $('err-kw');
-    e.textContent = ''; e.hidden = true;
-    $('kw').removeAttribute('aria-invalid');
+    Object.keys(FIELD).forEach(function (k) {
+      var f = FIELD[k];
+      $(f[0]).textContent = ''; $(f[0]).hidden = true;
+      $(f[1]).removeAttribute('aria-invalid');
+    });
   }
 
   var searched = false;   // 검색을 한 번이라도 했으면 「지난 공고 포함」·검색 대상 기관을 바꿀 때 바로 다시 찾는다
@@ -299,7 +330,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     showGroupError(gv.ok ? '' : gv.message);
     // R-02: 조건이 모두 비었으면 안내만 보여 주고 이전 결과도 지운다
     var v = validateConditions({ keywords: $('kw').value, exclude: $('ex').value, min: $('mn').value, max: $('mx').value, baseDate: $('bd').value });
-    if (!v.ok) { clearResults(); showError(v.message); return; }
+    if (!v.ok) { clearResults(); showError(v.message, v.field); return; }   // 목록·이전 결과를 지우고 해당 칸 아래에 첫 오류 하나만 보인다
     if (!gv.ok) { clearResults(); return; }   // 기관을 하나도 안 골랐으면 안내만 보이고 결과는 없다
     searched = true;
     var tokens = parseKeywords($('kw').value);
@@ -307,8 +338,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     var exs = parseKeywords($('ex').value);
     var mn = parseAmount($('mn').value), mx = parseAmount($('mx').value);
     var base = $('bd').value.trim();
-    // R-03(형식 오류) 안내는 아직 구현 전이라, 금액·기준일 형식이 틀리면 아무것도 하지 않는다.
-    if (!mn.ok || !mx.ok || isNaN(toUtc(base))) return;
+    // (금액·기준일 형식은 위 validateConditions(R-03a)가 이미 걸러 냈다)
     var found = filterBids(data.rows, { keywords: kws, exclude: exs, min: mn.value, max: mx.value, excludeClosed: !$('past').checked, baseDate: base, groups: selectedGroups() });
     var state = { kw: $('kw').value, ex: $('ex').value, mn: $('mn').value, mx: $('mx').value, bd: $('bd').value, past: $('past').checked, groups: selectedGroups() };
     if (!found.length) { renderEmpty(state, exs); return; }   // R-03b: 0건이면 이유와 다음 행동을 안내한다

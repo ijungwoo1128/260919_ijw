@@ -175,6 +175,39 @@ t('UT-17', '0건 안내(R-03b): 기본 문구 · 제외 키워드를 썼으면 �
     b2 === b0 + ' ' + '「마감·개찰 지난 공고 포함」을 켜면 지난 공고도 볼 수 있습니다.' &&
     b3 === b0 + ' 제외 키워드를 줄이거나 지워 보세요. 검색 대상 기관을 더 골라 보세요(지금 1개 선택). 「마감·개찰 지난 공고 포함」을 켜면 지난 공고도 볼 수 있습니다.';
 });
+var vc = function (mn, mx, bd, kw, ex) { return validateConditions({ keywords: kw === undefined ? '어린이' : kw, exclude: ex || '', min: mn, max: mx, baseDate: bd === undefined ? '2025-12-23' : bd }); };
+t('UT-03a', 'R-03a 금액 형식: 최소 「abc」「1.5」→BAD_AMOUNT · 최대 「-5」→NEGATIVE · 「100,000,000」·「0」·빈칸은 정상 · 오류 칸(field)은 최소=mn·최대=mx · 「,」만 있거나 「12abc」도 BAD_AMOUNT', function () {
+  var a = vc('abc', ''), b = vc('1.5', ''), c = vc('5,000,000', '-5'), d = vc('5,000,000', '100,000,000'), e = vc('0', ''), f = vc(',', ''), g = vc('12abc', '');
+  return a.code === 'BAD_AMOUNT' && a.message === '금액은 숫자로 입력해 주세요. 예: 100,000,000' && a.field === 'mn' && b.code === 'BAD_AMOUNT' && b.field === 'mn' &&
+    c.code === 'NEGATIVE' && c.message === '금액은 0 이상으로 입력해 주세요.' && c.field === 'mx' &&
+    d.ok === true && e.ok === true && f.code === 'BAD_AMOUNT' && g.code === 'BAD_AMOUNT' && checkAmount('100,000,000').value === 100000000 && checkAmount('0').value === 0 && checkAmount('-5').code === 'NEGATIVE';
+});
+t('UT-03b', 'R-03a 최소·최대 관계: 최소 500,000,000 > 최대 100,000,000 → RANGE(최대 칸 아래) · 같으면 정상 · 한쪽이 비면 검사 안 함', function () {
+  var a = vc('500,000,000', '100,000,000'), b = vc('100,000,000', '100,000,000'), c = vc('500,000,000', ''), d = vc('', '100');
+  return a.ok === false && a.code === 'RANGE' && a.message === '최소 금액이 최대 금액보다 클 수 없습니다.' && a.field === 'mx' && b.ok === true && c.ok === true && d.ok === true;
+});
+t('UT-03c', 'R-03a 기준일 형식: 「2025-13-45」「2025-02-30」「」「2025-2-3」→BAD_DATE(기준일 칸) · 「2025-12-23」 정상 · 오류가 여러 개면 기준일이 먼저 · 그다음 최소 → 최대 → 관계 → 빈값 순서', function () {
+  var m = '기준일을 날짜로 입력해 주세요. 예: 2025-12-23';
+  var bads = ['2025-13-45', '2025-02-30', '', '2025-2-3', '  '].map(function (d) { return vc('5,000,000', '', d); });
+  var first = vc('abc', '-5', '2025-13-45');       // 기준일·최소·최대가 모두 틀림 → 기준일이 먼저
+  var second = vc('abc', '-5', '2025-12-23');      // 최소·최대가 모두 틀림 → 최소가 먼저
+  var third = vc('500', 'xyz', '2025-12-23');      // 최대 형식이 틀림 → 관계 검사보다 먼저
+  var fourth = vc('500', '100', '2025-12-23', '');  // 관계 오류 → 빈값 검사보다 먼저(키워드가 비어 있어도 RANGE)
+  return bads.every(function (r) { return r.ok === false && r.code === 'BAD_DATE' && r.message === m && r.field === 'bd'; }) && vc('5,000,000', '', '2025-12-23').ok === true &&
+    first.code === 'BAD_DATE' && second.code === 'BAD_AMOUNT' && second.field === 'mn' && third.code === 'BAD_AMOUNT' && third.field === 'mx' && fourth.code === 'RANGE' &&
+    vc('5,000,000', '', '2025-12-23', '').code === 'EMPTY';
+});
+t('UT-03e', 'R-03c 자료 불러오기: undefined·{rows:[]}·rows 없음·null → 실패와 안내 문구 · 실제 window.BUSAN_BIDS → 정상과 건수 134', function () {
+  var msg = '공고 자료를 불러오지 못했습니다. data.js 파일이 app.html과 같은 폴더에 있는지 확인해 주세요.';
+  var bad = [undefined, null, { rows: [] }, {}, { rows: 'x' }].map(loadData);
+  var ok = loadData(window.BUSAN_BIDS);
+  return bad.every(function (r) { return r.ok === false && r.message === msg; }) && ok.ok === true && ok.count === 134;
+});
+t('UT-03f', 'R-03b 0건 안내 링크 2개: 교육청 입찰공고 안내(학교장터·나라장터 연결) · 교육청 계약체결현황, 주소는 https://www.pen.go.kr/… 새 탭', function () {
+  return EMPTY_LINKS.length === 2 && EMPTY_LINKS[0].text === '부산교육청 입찰공고 안내 (학교장터·나라장터 연결)' && EMPTY_LINKS[1].text === '부산교육청 계약체결현황' &&
+    EMPTY_LINKS[0].url === 'https://www.pen.go.kr/main/cm/cntnts/cntntsView.do?mi=31725&cntntsId=543' && EMPTY_LINKS[1].url === 'https://www.pen.go.kr/main/ir/cntrct/selectCntrctGeyackList.do?mi=30694' &&
+    EMPTY_LINKS.every(function (l) { return l.url.indexOf('https://www.pen.go.kr/') === 0; });
+});
 var st = function (o) { return Object.assign({ kw: '', ex: '', mn: '5,000,000', mx: '', bd: '2026-09-19', past: false, groups: [1, 2] }, o || {}); };
 t('UT-15a', '공유 링크 만들기: 기본 조건은 주소에 안 담김 · 키워드·제외·최대금액·지난 공고·기관을 담음 · 기준일은 오늘과 다를 때만 · 최소 금액을 비우면 「mn=」', function () {
   var today = '2026-09-19';

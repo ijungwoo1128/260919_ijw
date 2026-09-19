@@ -1,6 +1,6 @@
 // 부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기 — 계산·검사는 이 파일의 함수만 한다.
 // 데이터는 data.js의 window.BUSAN_BIDS를 읽는다. 화면 연결(DOM)은 app.html에 있다.
-// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택) · 제외 키워드(수강생 요청 2026-09-19). R-03 오류·R-04 메일 본문·R-05 자료 선택은 아직 없다.
+// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택) · 제외 키워드(수강생 요청 2026-09-19). R-03(형식 오류·자료 불러오기 실패)은 이제 있다. R-04 메일 본문(고르기)·R-05 자료 선택은 아직 없다.
 
 // 「교육」은 공고명에 거의 안 나오므로 함께 찾을 동의어 (requirements.md R-01)
 const SYNONYMS_EDU = ['교육', '강사', '연수', '수련', '어린이', '놀이', '어린이집', '유치원', '학교'];
@@ -116,10 +116,43 @@ function todayText(now) {
 const DEFAULT_MIN = 5000000;
 const DEFAULT_MIN_TEXT = '5,000,000';
 
-// 입력 칸의 원문(문자열)을 검사한다. 지금은 빈 조건(R-02)만 본다.
-// 키워드가 없고, 최소 금액이 비었거나 기본값 그대로이고, 최대 금액이 비었으면 「아직 조건을 안 넣은 것」으로 본다.
-// 공백·쉼표만 있는 키워드도 빈 것으로 본다. 금액·기준일 형식 오류(R-03a)는 아직 없다.
+// ── R-03 안내 문구 (requirements.md 그대로) ──
+const MSG_BAD_AMOUNT = '금액은 숫자로 입력해 주세요. 예: 100,000,000';
+const MSG_NEGATIVE = '금액은 0 이상으로 입력해 주세요.';
+const MSG_RANGE = '최소 금액이 최대 금액보다 클 수 없습니다.';
+const MSG_BAD_DATE = '기준일을 날짜로 입력해 주세요. 예: 2025-12-23';
+const MSG_LOAD_FAIL = '공고 자료를 불러오지 못했습니다. data.js 파일이 app.html과 같은 폴더에 있는지 확인해 주세요.';
+// 결과가 0건일 때 「다른 곳에서 직접 확인하기」 링크 2개 (R-03b)
+const EMPTY_LINKS = [
+  { text: '부산교육청 입찰공고 안내 (학교장터·나라장터 연결)', url: 'https://www.pen.go.kr/main/cm/cntnts/cntntsView.do?mi=31725&cntntsId=543' },
+  { text: '부산교육청 계약체결현황', url: 'https://www.pen.go.kr/main/ir/cntrct/selectCntrctGeyackList.do?mi=30694' },
+];
+
+// 금액 칸 하나를 검사: 비었으면 값 없음(정상), 음수는 NEGATIVE, 숫자·쉼표가 아니거나 숫자가 하나도 없으면 BAD_AMOUNT, 0은 정상
+function checkAmount(raw) {
+  const v = String(raw ?? '').trim();
+  if (v === '') return { ok: true, value: null };
+  if (/^-\s*[\d,]/.test(v)) return { ok: false, code: 'NEGATIVE' };
+  const p = parseAmount(v);
+  if (!p.ok || !/\d/.test(v)) return { ok: false, code: 'BAD_AMOUNT' };
+  return p;
+}
+
+// 자료 불러오기 검사 (R-03c): data.js가 없거나 깨져 window.BUSAN_BIDS가 없거나 비었으면 실패
+function loadData(d) {
+  return d && Array.isArray(d.rows) && d.rows.length ? { ok: true, count: d.rows.length } : { ok: false, message: MSG_LOAD_FAIL };
+}
+
+// 입력 칸의 원문(문자열)을 검사한다. 순서는 기준일 → 최소 금액 → 최대 금액 → 최소·최대 관계 → 빈 조건(R-02) → 키워드 충돌이며 **첫 오류 하나만** 돌려준다.
+// R-03a 오류에는 어느 칸 아래에 보여 줄지 field('bd'·'mn'·'mx')가 붙는다.
+// 빈 조건: 키워드가 없고, 최소 금액이 비었거나 기본값 그대로이고, 최대 금액이 비었으면 「아직 조건을 안 넣은 것」이다(공백·쉼표만 있는 키워드도 빈 것).
 function validateConditions(input) {
+  if (isNaN(toUtc(String(input.baseDate ?? '').trim()))) return { ok: false, code: 'BAD_DATE', message: MSG_BAD_DATE, field: 'bd' };
+  const mnCheck = checkAmount(input.min);
+  if (!mnCheck.ok) return { ok: false, code: mnCheck.code, message: mnCheck.code === 'NEGATIVE' ? MSG_NEGATIVE : MSG_BAD_AMOUNT, field: 'mn' };
+  const mxCheck = checkAmount(input.max);
+  if (!mxCheck.ok) return { ok: false, code: mxCheck.code, message: mxCheck.code === 'NEGATIVE' ? MSG_NEGATIVE : MSG_BAD_AMOUNT, field: 'mx' };
+  if (mnCheck.value !== null && mxCheck.value !== null && mnCheck.value > mxCheck.value) return { ok: false, code: 'RANGE', message: MSG_RANGE, field: 'mx' };
   const noKeyword = parseKeywords(input.keywords).length === 0;
   const minRaw = String(input.min ?? '').trim();
   const minParsed = parseAmount(minRaw);
