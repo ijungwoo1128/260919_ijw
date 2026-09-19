@@ -1,0 +1,103 @@
+# 월·목 아침(한국 시각 07:00)에 공개 게시판 자료를 다시 모아 저장소에 커밋한다. 커밋이 올라가면 Vercel이 자동으로 다시 배포한다.
+# - 키·로그인이 필요 없는 수집기만 돌린다(교육청·시청·구군·교육지원청·ALIO). 대학 자료(내 PC의 이전 프로젝트 결과)와 나라장터(서비스키)는 여기서 돌리지 않는다.
+# - 수집기가 실패하면 그 자료 파일은 바뀌지 않는다. 마지막에 검사기(tools/check_data.js)가 형식·개인정보·급감을 확인해, 이상한 파일은 이전 상태로 되돌리고 나머지만 커밋한다.
+# - 사람이 직접 돌리려면 저장소의 Actions 탭 → 「자료 자동 갱신」 → Run workflow.
+name: 자료 자동 갱신
+
+on:
+  schedule:
+    - cron: '0 22 * * 0'   # 일요일 22:00 UTC = 월요일 07:00 KST
+    - cron: '0 22 * * 3'   # 수요일 22:00 UTC = 목요일 07:00 KST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 수집 규칙 테스트(네트워크 없이)
+        run: |
+          for f in tools/test_*.js; do
+            echo "== $f"
+            node "$f"
+          done
+
+      - name: 교육청 본청 학교입찰정보
+        id: pen
+        continue-on-error: true
+        run: node tools/collect_pen.js
+
+      - name: 부산광역시청 고시공고
+        id: busan
+        continue-on-error: true
+        run: node tools/collect_busan.js
+
+      - name: 구·군 입찰공고
+        id: gu
+        continue-on-error: true
+        run: node tools/collect_gu.js
+
+      - name: 공공기관(ALIO)
+        id: alio
+        continue-on-error: true
+        run: node tools/collect_alio.js
+
+      - name: 5개 교육지원청(본청 자료를 읽으므로 교육청 다음에 실행)
+        id: ofc
+        continue-on-error: true
+        run: node tools/collect_ofc.js
+
+      - name: 자료 검사와 이상한 파일 되돌리기
+        run: node tools/check_data.js --revert
+
+      - name: 바뀐 자료 커밋
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data_pen.js data_busan.js data_gu.js data_ofc.js data_alio.js
+          if git diff --cached --quiet; then
+            echo "changed=no" >> "$GITHUB_OUTPUT"
+            echo "바뀐 자료가 없어 커밋하지 않습니다."
+          else
+            git commit -m "chore: 월·목 자료 자동 갱신 ($(date +%F))"
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push origin HEAD:main && break
+              echo "push 실패 — 다시 시도($i)"; sleep 5
+            done
+            echo "changed=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 요약
+        if: always()
+        run: |
+          {
+            echo "## 자료 자동 갱신 결과"
+            echo ""
+            echo "| 수집기 | 결과 |"
+            echo "|---|---|"
+            echo "| 교육청 본청 | ${{ steps.pen.outcome }} |"
+            echo "| 부산광역시청 | ${{ steps.busan.outcome }} |"
+            echo "| 구·군 | ${{ steps.gu.outcome }} |"
+            echo "| 공공기관(ALIO) | ${{ steps.alio.outcome }} |"
+            echo "| 5개 교육지원청 | ${{ steps.ofc.outcome }} |"
+            echo ""
+            echo "커밋 여부: ${{ steps.commit.outputs.changed }}"
+            echo ""
+            echo "실패한 수집기의 자료 파일은 바뀌지 않고 이전 자료가 그대로 남습니다."
+          } >> "$GITHUB_STEP_SUMMARY"
