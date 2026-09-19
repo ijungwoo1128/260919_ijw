@@ -168,6 +168,53 @@ t('UT-13d', '검사: 제외 키워드만 넣어도 빈 조건이 아님 · 같�
     summaryLine(3, '2026-09-19', []) === '조건에 맞는 공고 3건 (기준일 2026-09-19)' && summaryLine(3, '2026-09-19') === '조건에 맞는 공고 3건 (기준일 2026-09-19)';
 });
 
+var st = function (o) { return Object.assign({ kw: '', ex: '', mn: '5,000,000', mx: '', bd: '2026-09-19', past: false, groups: [1, 2] }, o || {}); };
+t('UT-15a', '공유 링크 만들기: 기본 조건은 주소에 안 담김 · 키워드·제외·최대금액·지난 공고·기관을 담음 · 기준일은 오늘과 다를 때만 · 최소 금액을 비우면 「mn=」', function () {
+  var today = '2026-09-19';
+  return buildShareQuery(st(), today) === '' &&
+    buildShareQuery(st({ kw: '위탁, 청소년' }), today) === 'kw=%EC%9C%84%ED%83%81%2C+%EC%B2%AD%EC%86%8C%EB%85%84' &&
+    buildShareQuery(st({ ex: '급식, 교복', mx: '100,000,000', past: true, groups: [1, 2, 3] }), today).split('&').sort().join('&') === 'ex=%EA%B8%89%EC%8B%9D%2C+%EA%B5%90%EB%B3%B5&g=1%2C2%2C3&mx=100%2C000%2C000&past=1' &&
+    buildShareQuery(st({ kw: 'a', bd: '2026-10-01' }), today) === 'kw=a&bd=2026-10-01' && buildShareQuery(st({ kw: 'a', mn: '' }), today) === 'kw=a&mn=' &&
+    buildShareQuery(st({ kw: 'a', groups: [2, 1] }), today) === 'kw=a';
+});
+t('UT-15b', '링크 읽기: 만든 링크를 읽으면 같은 조건(왕복) · 조건이 없으면 has=false · 잘못된 값(기관 9·글자·기준일 형식)은 기본값으로', function () {
+  var today = '2026-09-19';
+  var a = st({ kw: '위탁, 청소년', ex: '급식', mx: '100,000,000', past: true, groups: [1, 2, 4], bd: '2026-10-01' });
+  var p = parseShareQuery(buildShareQuery(a, today));
+  var b = st({ kw: '어린이', mn: '' });
+  var pb = parseShareQuery(buildShareQuery(b, today));
+  var bad = parseShareQuery('?kw=x&g=9,a&bd=2026-13-45&mn=abc');
+  var none = parseShareQuery('');
+  return p.has && p.kw === a.kw && p.ex === '급식' && p.mx === a.mx && p.past === true && same(p.groups, [1, 2, 4]) && p.bd === '2026-10-01' && p.mn === '5,000,000' &&
+    pb.mn === '' && pb.kw === '어린이' && same(pb.groups, [1, 2]) &&
+    bad.has && same(bad.groups, [1, 2]) && bad.bd === '' && bad.mn === 'abc' &&
+    none.has === false && none.mn === '5,000,000' && same(none.groups, [1, 2]) && parseShareQuery(null).has === false;
+});
+var sfx = [
+  { row: { title: '가 청소년 캠프 운영', org: '부산광역시 여성가족국', type: '시청 고시공고', open: '2026-09-25', openText: '', price: null, url: 'https://ex.kr/1' }, days: 6 },
+  { row: { title: '나 수학여행 위탁 입찰(취소)', org: '경혜여자고등학교', type: '학교입찰', status: '취소', open: null, openText: '2026. 9. 14. ~ 2026. 9. 28.', price: 45000000, url: 'https://ex.kr/2' }, days: NaN },
+  { row: { title: '다 어린이 놀이시설', org: '부산도시공사', type: '입찰', open: '2026-09-10', openText: '', price: 345454545, url: '' }, days: -9 }
+];
+t('UT-15c', '메일 본문: 제목줄(기준일·건수·임박순) · 검색조건 한 줄 · 링크 · 번호 1.2.3.(받은 순서 그대로) · [D-6]·[개찰일 확인 필요]·[개찰 지남(9일 전)] · 금액 미기재/원 · 취소 표시 · 링크 없는 공고는 원문 줄 생략', function () {
+  var txt = buildShareText({ base: '2026-09-19', items: sfx, kw: '캠프, 위탁', ex: '급식', mn: '5,000,000', mx: '', past: true, groups: [1, 2], link: 'https://site.kr/app.html?kw=x' });
+  var L = txt.split('\n');
+  return L[0] === '[부산 입찰공고 검색 결과] 2026-09-19 기준 · 3건 (마감·개찰 임박순)' &&
+    L[1] === '검색조건: 키워드 캠프, 위탁 · 제외 급식 · 금액 5,000,000원 이상 · 대상 기관 1.시청·구군·지방공기업 / 2.교육청·학교 · 지난 공고 포함' &&
+    L[2] === '같은 조건으로 다시 보기: https://site.kr/app.html?kw=x' && L[3] === '' &&
+    L[4] === '1. [D-6] 가 청소년 캠프 운영' && L[5] === '   부산광역시 여성가족국 · 시청 고시공고 · 개찰예정일 2026-09-25 · 금액 미기재' && L[6] === '   원문: https://ex.kr/1' &&
+    L[7] === '2. [개찰일 확인 필요] 【취소된 공고】 나 수학여행 위탁 입찰(취소)' && L[8] === '   경혜여자고등학교 · 학교입찰 · 입찰일시 2026. 9. 14. ~ 2026. 9. 28. · 45,000,000원' && L[9] === '   원문: https://ex.kr/2' &&
+    L[10] === '3. [개찰 지남(9일 전)] 다 어린이 놀이시설' && L[11] === '   부산도시공사 · 입찰 · 개찰예정일 2026-09-10 · 345,454,545원' && L[12] === '' &&
+    L[13] === '※ 일정·금액은 공고 원문에서 반드시 다시 확인하세요.' && L.length === 14;
+});
+t('UT-15d', '메일 본문 상한: 45건이면 30건까지 번호를 붙이고 「… 외 15건은 위 링크에서 확인하세요.」 · 링크가 없으면 링크 줄 생략 · 제외·최대 금액이 없으면 조건 줄에서 생략', function () {
+  var many = []; for (var i = 0; i < 45; i++) many.push({ row: { title: '공고' + (i + 1), org: 'ㄱ', type: 'ㄴ', open: '2026-10-01', price: 1, url: '' }, days: i });
+  var txt = buildShareText({ base: '2026-09-19', items: many, kw: '', ex: '', mn: '', mx: '100,000,000', past: false, groups: [3] });
+  var L = txt.split('\n');
+  var last = L.filter(function (l) { return /^\d+\. /.test(l); });
+  return last.length === 30 && last[29].indexOf('30. [D-29] 공고30') === 0 && L.indexOf('… 외 15건은 위 링크에서 확인하세요.') !== -1 && L[1].indexOf('다시 보기') === -1 &&
+    L[1] === '검색조건: 키워드 없음 · 금액 최소 제한 없음 · 100,000,000원 이하 · 대상 기관 3.부산지역 대학 · 지난 공고 제외' && L[2] === '';
+});
+
 var out = document.getElementById('out'), pass = 0;
 T.forEach(function (x) {
   if (x[2]) pass++;

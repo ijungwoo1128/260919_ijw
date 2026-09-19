@@ -42,6 +42,13 @@ button{font:inherit;font-weight:800;border-radius:12px;min-height:48px;padding:0
 .secondary{background:#fff;color:var(--teal);border:2px solid var(--teal)}
 .secondary:hover,.secondary:focus-visible{background:var(--teal-l);outline:3px solid #b7dcd8;outline-offset:2px}
 #res{margin-top:22px}
+.share{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0 14px}
+.sharebtns{display:flex;gap:10px;flex-wrap:wrap}
+.sharebtns button{flex:1 1 200px;min-height:44px}
+.sharemsg{margin:8px 0 0;font-weight:700;color:var(--teal-d);min-height:1.4em}
+.share summary{cursor:pointer;color:var(--teal-d);font-weight:700;margin-top:6px}
+.share textarea{width:100%;box-sizing:border-box;margin-top:8px;font:14px/1.5 system-ui,'Malgun Gothic',sans-serif;border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink);background:var(--bg)}
+.no{display:inline-block;min-width:2em;color:var(--orange-d);font-weight:800}
 #summary{font-weight:800;font-size:18px;margin:0 0 4px}
 #synnote{font-size:14px;color:var(--teal-d);margin:0 0 6px}
 #list{list-style:none;margin:10px 0 0;padding:0;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
@@ -127,6 +134,16 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
  <section id="res" aria-live="polite" hidden>
   <p id="summary"></p>
   <p id="synnote"></p>
+  <div id="share" class="share">
+   <div class="sharebtns">
+    <button type="button" id="copylink" class="secondary">이 검색 링크 복사</button>
+    <button type="button" id="copytext" class="secondary">메일 본문 복사 (번호 목록)</button>
+   </div>
+   <p id="sharemsg" class="sharemsg" role="status"></p>
+   <p id="filenote" class="hint" hidden>지금은 이 PC의 파일로 열려 있어, 복사한 링크를 다른 사람이 열 수 없습니다. 배포된 주소(Vercel)에서 열어 복사하면 함께 볼 수 있습니다.</p>
+   <details><summary>복사될 메일 본문 미리 보기</summary>
+    <textarea id="sharetext" readonly rows="10" aria-label="복사될 메일 본문"></textarea></details>
+  </div>
   <p class="srcline"></p>
   <ul id="list"></ul>
  </section>
@@ -161,18 +178,19 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   }
 
   function clearResults() {
+    setAddress('');
     $('res').hidden = true;
     $('summary').textContent = '';
     $('synnote').textContent = '';
     $('list').textContent = '';
   }
 
-  function render(items, base, usedEdu, exclude) {
+  function render(items, base, usedEdu, exclude, state) {
     $('summary').textContent = summaryLine(items.length, base, exclude);
     $('synnote').textContent = usedEdu ? SYNONYM_NOTE : '';
     var ul = $('list');
     ul.textContent = '';
-    items.forEach(function (it) {
+    items.forEach(function (it, idx) {
       var r = it.row;
       var li = document.createElement('li'); li.className = 'item';
       var d = document.createElement('div');
@@ -180,9 +198,11 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
       d.textContent = formatRemaining(it.days);
       d.setAttribute('aria-label', '개찰까지 ' + formatRemaining(it.days));
       var b = document.createElement('div');
-      var t = document.createElement('div'); t.className = 't'; t.textContent = r.title;
+      var t = document.createElement('div'); t.className = 't';
+      var no = document.createElement('span'); no.className = 'no'; no.textContent = (idx + 1) + '.';   // 마감·개찰 임박순 번호
+      t.appendChild(no); t.appendChild(document.createTextNode(r.title));
       var m = document.createElement('div'); m.className = 'm';
-      m.textContent = [r.status === '취소' ? '【취소된 공고】' : '', r.org, r.type, '공고게시일 ' + r.posted, r.openText ? '입찰일시 ' + r.openText : r.open ? '개찰예정일 ' + r.open : '일정은 원문에서 확인', formatPrice(r)].filter(Boolean).join(' · ');
+      m.textContent = [r.status === '취소' ? '【취소된 공고】' : '', r.org, r.type, '공고게시일 ' + r.posted, scheduleText(r), formatPrice(r)].filter(Boolean).join(' · ');
       b.appendChild(t); b.appendChild(m);
       if (r.url) {
         var a = document.createElement('a'); a.className = 'lk'; a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
@@ -191,7 +211,38 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
       li.appendChild(d); li.appendChild(b);
       ul.appendChild(li);
     });
+    // 공유: 검색조건을 담은 링크와 번호 붙은 메일 본문을 만든다
+    var link = pageUrl() + (shareQuery(state) ? '?' + shareQuery(state) : '');
+    $('sharetext').value = buildShareText({ base: base, items: items, kw: state.kw, ex: state.ex, mn: state.mn, mx: state.mx, past: state.past, groups: state.groups, link: link });
+    $('sharemsg').textContent = '';
+    $('filenote').hidden = location.protocol !== 'file:';
+    shareLink = link;
+    setAddress(shareQuery(state));
     $('res').hidden = false;
+  }
+
+  // 공유 링크·주소창
+  var shareLink = '';
+  function pageUrl() { return location.href.split(/[?#]/)[0]; }
+  function shareQuery(state) { return buildShareQuery(state, todayText()); }
+  function setAddress(q) {   // 주소창도 같은 조건으로 바꿔, 주소를 그대로 복사해도 공유가 된다(file:// 등에서 막히면 무시)
+    try { history.replaceState(null, '', pageUrl() + (q ? '?' + q : '')); } catch (e) { /* 무시 */ }
+  }
+  function copyText(text, okMsg, failMsg, openPreview) {
+    var done = function () { $('sharemsg').textContent = okMsg; };
+    var fail = function () {
+      $('sharemsg').textContent = failMsg;
+      if (openPreview) $('sharetext').closest('details').open = true;
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, fail);
+    } else {   // 보안 연결이 아닌 곳(파일로 열기 등): 글상자를 선택해 복사 명령을 시도한다
+      var ta2 = document.createElement('textarea'); ta2.value = text; ta2.setAttribute('readonly', ''); ta2.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta2); ta2.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(ta2);
+      if (ok) done(); else fail();
+    }
   }
 
   function showError(msg) {
@@ -247,7 +298,8 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     if (!mn.ok || !mx.ok || isNaN(toUtc(base))) return;
     var found = filterBids(data.rows, { keywords: kws, exclude: exs, min: mn.value, max: mx.value, excludeClosed: !$('past').checked, baseDate: base, groups: selectedGroups() });
     if (!found.length) { clearResults(); return; }   // 0건 안내(R-03b)는 아직 없다
-    render(sortBids(found, base), base, tokens.indexOf('교육') !== -1, exs);
+    var state = { kw: $('kw').value, ex: $('ex').value, mn: $('mn').value, mx: $('mx').value, bd: $('bd').value, past: $('past').checked, groups: selectedGroups() };
+    render(sortBids(found, base), base, tokens.indexOf('교육') !== -1, exs, state);
   }
 
   $('f').addEventListener('submit', function (e) { e.preventDefault(); search(); });
@@ -264,8 +316,15 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     setGroups(DEFAULT_GROUPS); showGroupError('');
     hideError();
     clearResults();
+    setAddress('');
     searched = false;
     $('kw').focus();
+  });
+  $('copylink').addEventListener('click', function () {
+    copyText(shareLink, '검색 링크를 복사했습니다. 이 링크를 열면 같은 조건으로 바로 검색됩니다.', '자동 복사가 막혀 있습니다. 주소창의 주소를 그대로 복사해 주세요(같은 조건이 담겨 있습니다).', false);
+  });
+  $('copytext').addEventListener('click', function () {
+    copyText($('sharetext').value, '메일 본문을 복사했습니다. 메일에 붙여 넣으세요.', '자동 복사가 막혀 있습니다. 「복사될 메일 본문 미리 보기」의 글을 직접 선택해 복사해 주세요.', true);
   });
 
   $('bd').value = todayText();
@@ -273,6 +332,14 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   setGroups(DEFAULT_GROUPS);
   fillGroupCounts();
   fillSource();
+
+  // 공유 링크로 열었으면 조건을 채워 바로 검색한다
+  var sq = parseShareQuery(location.search);
+  if (sq.has) {
+    $('kw').value = sq.kw; $('ex').value = sq.ex; $('mn').value = sq.mn; $('mx').value = sq.mx;
+    $('bd').value = sq.bd || todayText(); $('past').checked = sq.past; setGroups(sq.groups);
+    search();
+  }
 })();
 </script>
 </body>

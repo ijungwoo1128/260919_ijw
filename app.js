@@ -162,3 +162,80 @@ function sourceLine(meta) {
 function summaryLine(count, baseDate, exclude) {
   return `조건에 맞는 공고 ${count}건 (기준일 ${baseDate})` + (exclude && exclude.length ? ` · 제외 키워드: ${exclude.join(', ')}` : '');
 }
+
+// ── 결과 공유 (수강생 요청 2026-09-19) ──
+// 검색조건을 주소(링크)에 담는다. 링크를 열면 같은 조건으로 자동 검색하고, 결과는 마감·개찰이 임박한 것부터 번호를 붙여 보여 준다.
+// 기준일은 링크를 여는 날(오늘)이 기본이라, 보낸 날과 여는 날이 다르면 D-day가 여는 날 기준으로 다시 계산된다(기준일을 직접 바꿨을 때만 링크에 담는다).
+const SHARE_MAX_ITEMS = 30;       // 메일 본문에 넣는 공고 수 상한(넘으면 나머지는 링크에서 보라고 안내)
+const SHARE_MAX_TEXT = 200;       // 링크에 담는 키워드 글자 수 상한
+const GROUP_SHORT = { 1: '시청·구군·지방공기업', 2: '교육청·학교', 3: '부산지역 대학', 4: '국가기관', 5: '기타 기관' };
+
+// 화면 조건 { kw, ex, mn, mx, bd, past, groups } → 주소 뒤 「?…」에 붙일 문자열(기본값과 같은 것은 생략)
+function buildShareQuery(s, today) {
+  const q = new URLSearchParams();
+  const kw = String(s.kw ?? '').trim().slice(0, SHARE_MAX_TEXT), ex = String(s.ex ?? '').trim().slice(0, SHARE_MAX_TEXT);
+  const mn = String(s.mn ?? '').trim(), mx = String(s.mx ?? '').trim(), bd = String(s.bd ?? '').trim();
+  if (kw) q.set('kw', kw);
+  if (ex) q.set('ex', ex);
+  if (mn !== DEFAULT_MIN_TEXT) q.set('mn', mn);           // 비운 것(최소 제한 없음)도 「mn=」으로 남겨 기본값과 구별한다
+  if (mx) q.set('mx', mx);
+  if (bd && bd !== today) q.set('bd', bd);
+  if (s.past) q.set('past', '1');
+  const g = (s.groups || []).slice().sort();
+  if (g.join(',') !== DEFAULT_GROUPS.join(',')) q.set('g', g.join(','));
+  return q.toString();
+}
+
+// 주소의 「?…」 → 화면 조건. 잘못된 값은 기본값으로 돌린다. has=true면 링크에 조건이 들어 있다는 뜻(자동 검색)
+function parseShareQuery(search) {
+  const q = new URLSearchParams(String(search ?? ''));
+  const gs = [...new Set((q.get('g') || '').split(',').map(Number).filter(n => [1, 2, 3, 4, 5].includes(n)))].sort();
+  const bd = (q.get('bd') || '').trim();
+  return {
+    has: ['kw', 'ex', 'mn', 'mx', 'bd', 'past', 'g'].some(k => q.has(k)),
+    kw: (q.get('kw') || '').slice(0, SHARE_MAX_TEXT), ex: (q.get('ex') || '').slice(0, SHARE_MAX_TEXT),
+    mn: q.has('mn') ? q.get('mn').trim() : DEFAULT_MIN_TEXT, mx: (q.get('mx') || '').trim(),
+    bd: isNaN(toUtc(bd)) ? '' : bd,                       // 형식이 틀리면 비워서 오늘로 둔다
+    past: q.get('past') === '1',
+    groups: gs.length ? gs : DEFAULT_GROUPS.slice(),
+  };
+}
+
+// 공고의 일정 표기(화면과 메일 본문이 같은 문구를 쓴다)
+function scheduleText(r) {
+  return r.openText ? '입찰일시 ' + r.openText : r.open ? '개찰예정일 ' + r.open : '일정은 원문에서 확인';
+}
+
+// 검색 조건을 한 줄 글로
+function conditionText(s) {
+  const parts = [];
+  const kws = parseKeywords(s.kw), exs = parseKeywords(s.ex);
+  parts.push('키워드 ' + (kws.length ? kws.join(', ') : '없음'));
+  if (exs.length) parts.push('제외 ' + exs.join(', '));
+  const mn = String(s.mn ?? '').trim(), mx = String(s.mx ?? '').trim();
+  parts.push('금액 ' + (mn ? mn + '원 이상' : '최소 제한 없음') + (mx ? ' · ' + mx + '원 이하' : ''));
+  parts.push('대상 기관 ' + (s.groups || []).map(g => g + '.' + GROUP_SHORT[g]).join(' / '));
+  parts.push(s.past ? '지난 공고 포함' : '지난 공고 제외');
+  return parts.join(' · ');
+}
+
+// 메일 본문: 조건·기준일·링크 + 마감 임박순 번호 목록. items는 sortBids 결과([{row, days}])를 그대로 받는다.
+function buildShareText(info) {
+  const items = info.items || [];
+  const shown = items.slice(0, SHARE_MAX_ITEMS);
+  const lines = [
+    `[부산 입찰공고 검색 결과] ${info.base} 기준 · ${items.length}건 (마감·개찰 임박순)`,
+    '검색조건: ' + conditionText(info),
+  ];
+  if (info.link) lines.push('같은 조건으로 다시 보기: ' + info.link);
+  lines.push('');
+  shown.forEach((it, i) => {
+    const r = it.row;
+    lines.push(`${i + 1}. [${formatRemaining(it.days)}] ${r.status === '취소' ? '【취소된 공고】 ' : ''}${r.title}`);
+    lines.push('   ' + [r.org, r.type, scheduleText(r), formatPrice(r)].filter(Boolean).join(' · '));
+    if (r.url) lines.push('   원문: ' + r.url);
+  });
+  if (items.length > shown.length) lines.push('', `… 외 ${items.length - shown.length}건은 위 링크에서 확인하세요.`);
+  lines.push('', '※ 일정·금액은 공고 원문에서 반드시 다시 확인하세요.');
+  return lines.join('\n');
+}
