@@ -1,0 +1,7 @@
+# 비공개(내 PC 전용) 자료 — 절대 GitHub·Vercel에 올리지 않는다
+# data_pilot.js 에는 스크랩한 제3자의 담당자 이름·연락처가 들어간다
+data_pilot.js
+*.local.*
+references/
+data/raw/
+.claude/

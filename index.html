@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기</title>
+<meta name="description" content="조건으로 입찰 공고를 걸러 보고, 고른 공고를 메일 본문으로 바로 복사하는 수업 과제 데모입니다.">
+<style>
+:root{--teal:#0f5c5c;--teal-d:#0a4444;--teal-l:#e6f2f1;--orange:#e8710a;--orange-d:#c25e05;--ink:#1d2a2a;--muted:#5b6b6b;--line:#dbe6e5;--bg:#f5f9f8;--warn:#b3261e}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;color:var(--ink);background:#fff;line-height:1.65;font-size:17px;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+section.alt{background:var(--bg)}
+.tag{display:inline-block;font-size:14px;font-weight:700;color:var(--teal);letter-spacing:.02em}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.25;margin:10px 0 14px;font-weight:800}
+h2{font-size:clamp(24px,4.6vw,30px);line-height:1.35;margin:8px 0 18px;font-weight:800}
+h3{font-size:18px;margin:0 0 6px}
+p{margin:0 0 12px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.hero{background:var(--teal);color:#fff;border-bottom:0;padding:44px 0 60px}
+.hero .tag{color:#bfe3df}
+.pill{display:inline-block;border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:3px 12px;font-size:13px;margin-bottom:26px}
+.hero p{font-size:19px;color:#e6f2f1;max-width:34em}
+.btn{display:block;text-align:center;padding:20px 24px;border-radius:16px;background:var(--orange);color:#fff;font-size:21px;font-weight:800;text-decoration:none;margin-top:26px;min-height:56px;box-shadow:0 2px 0 var(--orange-d)}
+.btn:hover,.btn:focus-visible{background:var(--orange-d);outline:3px solid #ffd7b0;outline-offset:2px}
+.hero .btn{max-width:360px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 18px}
+.card{border:1px solid var(--line);background:#fff;border-radius:16px;padding:20px}
+.big{font-size:clamp(38px,9vw,54px);font-weight:800;line-height:1.1;color:var(--teal);margin:0}
+.big small{font-size:.42em;font-weight:700;color:var(--ink)}
+.chartbox{border:1px solid var(--line);background:#fff;border-radius:16px;padding:18px;margin:14px 0}
+.chartbox svg{display:block;max-width:520px;margin:0 auto}
+.bar{height:18px;border-radius:9px;background:var(--teal);min-width:6px}
+.bar.o{background:var(--orange)}
+.row{display:flex;align-items:center;gap:12px;margin:8px 0}
+.row .lb{width:150px;flex:none;font-size:14px}
+.row .tr{flex:1;background:#eef4f3;border-radius:9px}
+.row .v{width:60px;flex:none;text-align:right;font-weight:700;font-size:14px}
+.note{border-left:4px solid var(--orange);background:#fff7ef;padding:12px 16px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.persona{display:flex;gap:16px;align-items:flex-start;border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff}
+.avatar{flex:none;width:56px;height:56px;border-radius:50%;background:var(--teal-l);display:grid;place-items:center;font-weight:800;color:var(--teal);font-size:15px}
+.quote{font-size:19px;font-weight:700;margin:10px 0;color:var(--teal-d)}
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:stretch;margin:16px 0}
+.flow .st{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;font-size:15px}
+.flow .st.hl{border-color:var(--teal);background:var(--teal-l)}
+.flow .ar{align-self:center;color:var(--teal);font-weight:800;font-size:22px}
+.preview{border:2px solid var(--teal);border-radius:16px;overflow:hidden;background:#fff;margin:14px 0}
+.pv-head{background:var(--teal);color:#fff;padding:10px 16px;font-weight:700;font-size:15px}
+.pv-cond{padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--line);font-size:14px;display:grid;gap:6px}
+.pv-cond span b{color:var(--teal-d)}
+.pv-bar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700}
+.pv-btns{display:flex;gap:6px;flex-wrap:wrap}
+.pv-btns i{font-style:normal;border:1px solid var(--teal);color:var(--teal);border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700}
+.pv-item{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);align-items:center}
+.pv-item:last-child{border-bottom:0}
+.dday{font-size:26px;font-weight:800;color:var(--orange-d);line-height:1.1}
+.dday.past{font-size:15px;color:var(--muted);line-height:1.3}
+.pv-item .t{font-weight:700;font-size:15px;line-height:1.45}
+.pv-item .m{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:13px;color:var(--muted)}
+.chip{display:inline-block;border:1px dashed var(--muted);color:var(--muted);border-radius:999px;padding:1px 10px;font-size:13px;max-width:100%;line-height:1.5}
+.persona>div:last-child{min-width:0}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.three .card ul{margin:6px 0 0;padding-left:18px;font-size:15px}
+footer{padding:36px 0 60px;background:var(--bg);font-size:14px;color:var(--muted)}
+footer strong{color:var(--ink)}
+a{color:var(--teal)}
+@media (max-width:640px){
+ .cards,.three{grid-template-columns:1fr}
+ .flow{grid-template-columns:1fr}
+ .flow .ar{transform:rotate(90deg);justify-self:center}
+ .row .lb{width:104px}
+ .pv-item{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ① 한 줄 소개 (Attention) -->
+<header class="hero" id="s1">
+ <div class="wrap">
+  <span class="pill">수업 과제 데모</span><br>
+  <span class="tag">① 한 줄 소개</span>
+  <h1>부산지역 교육 및 학교<br>(어린이 시설 등) 관련<br>입찰공고 찾기</h1>
+  <p>조건으로 공고를 걸러 보고, 고른 공고는 메일 본문으로 바로 복사하세요.</p>
+  <a class="btn" href="./app.html">공고 찾기 시작</a>
+ </div>
+</header>
+
+<!-- ② 데이터로 본 문제 (Attention) -->
+<section id="s2">
+ <div class="wrap">
+  <span class="tag">② 데이터로 본 문제</span>
+  <h2>공고를 통째로 훑어도, 교육·어린이 관련은 134건 중 3건뿐입니다</h2>
+  <div class="cards">
+   <div class="card">
+    <p class="big"><small>134건 중 </small>3건</p>
+    <p class="muted small">부산도시공사 2025년 입찰공고 중 교육·어린이 관련(2.2%): 강사 용역 1 · 놀이시설 제작설치 1 · 직장어린이집 설계 1</p>
+   </div>
+   <div class="card">
+    <p class="big">6일<small> 중앙값</small></p>
+    <p class="muted small">소액수의견적 31건의 공고 → 개찰 기간(최소 3일 · 최대 7일)</p>
+   </div>
+  </div>
+  <p class="muted small">출처: 부산도시공사 입찰공고(공공데이터포털, 수정일 2026-01-14) · 공고게시일 2025-01-13~2025-12-23 · 2026-09-19 수집 · 이용허락범위 제한 없음 · <a href="https://www.data.go.kr/data/15046146/fileData.do" target="_blank" rel="noopener">원문 데이터 페이지</a></p>
+
+  <div class="chartbox">
+   <h3>기간별 변화 — 훑어야 할 공고 수</h3>
+   <div class="row"><span class="lb">전체 공고</span><span class="tr"><div class="bar" style="width:100%"></div></span><span class="v">134건</span></div>
+   <div class="row"><span class="lb">조건으로 걸러 낸 공고</span><span class="tr"><div class="bar o" style="width:2.24%"></div></span><span class="v">3건</span></div>
+   <p class="muted small" style="margin:10px 0 0">계산: (134 − 3) ÷ 134 × 100 = 97.8% 줄어듦</p>
+  </div>
+
+  <div class="chartbox">
+   <h3>교육·어린이 관련 3건의 공고 → 개찰 기간</h3>
+   <svg viewBox="0 0 360 118" width="100%" role="img" aria-label="공고에서 개찰까지 강사 수급 용역 6일, 놀이시설 제작설치 22일, 직장어린이집 설계 55일">
+    <g font-size="13" fill="#1d2a2a">
+     <text x="122" y="24" text-anchor="end">강사 수급 용역</text>
+     <text x="122" y="64" text-anchor="end">놀이시설 제작설치</text>
+     <text x="122" y="104" text-anchor="end">어린이집 설계</text>
+    </g>
+    <rect x="130" y="10" width="24" height="20" rx="5" fill="#e8710a"/>
+    <rect x="130" y="50" width="88" height="20" rx="5" fill="#0f5c5c"/>
+    <rect x="130" y="90" width="220" height="20" rx="5" fill="#0f5c5c"/>
+    <g font-size="13" font-weight="700" fill="#1d2a2a">
+     <text x="160" y="25">6일</text>
+     <text x="224" y="65">22일</text>
+     <text x="300" y="105" fill="#fff">55일</text>
+    </g>
+   </svg>
+   <p class="muted small" style="margin:6px 0 0">공고 게시일부터 개찰예정일까지의 일수입니다.</p>
+  </div>
+
+  <div class="note">
+   <p style="margin:0 0 6px"><b>해석</b> 조건으로 걸러 주면 담당자가 직접 훑을 공고가 134건에서 3건으로 줄어듭니다.</p>
+   <p style="margin:0"><b>한계</b> 부산도시공사 한 곳의 2025년분이며, 「교육·어린이 관련」은 제목 키워드로 고른 3건입니다. 개찰예정일은 접수 마감과 다를 수 있습니다.</p>
+  </div>
+ </div>
+</section>
+
+<!-- ③ 누구의 어떤 순간 (Interest) -->
+<section class="alt" id="s3">
+ <div class="wrap">
+  <span class="tag">③ 누구의 어떤 순간</span>
+  <h2>월·목에 찾고 화·금에 보내다, 마감 뒤에야 알게 되는 순간</h2>
+
+  <div class="persona">
+   <div class="avatar" aria-hidden="true">ijw</div>
+   <div>
+    <p class="small muted" style="margin:0 0 4px"><span class="chip">페르소나 · 수강생 진술을 바탕으로 한 가상 인물</span></p>
+    <h3>ijw 대표 · 40대 · 부산 소규모 교육기업 대표 겸 입찰 담당</h3>
+    <p class="small muted" style="margin:0">콘텐츠 개발·캠프·영어·수학여행·위탁사업 등 교육 관련 입찰에 참여합니다. 참여 결정 기준은 금액과 마감입니다.</p>
+    <p class="quote">「우리가 참여하면 딸 수 있는 사업을 몰라서 그냥 넘긴 적이 있어요.」</p>
+   </div>
+  </div>
+
+  <div class="chartbox">
+   <h3>이 사람의 하루 흐름 — 감정 점수 <span class="chip">가설</span></h3>
+   <svg viewBox="0 0 360 140" width="100%" role="img" aria-label="검색 시작 2점, 조건 입력 3점, 결과 확인 1점(가장 낮음), 본문 만들기 4점, 배포·회신 4점">
+    <polyline points="30,80 105,60 180,100 255,40 330,40" fill="none" stroke="#0f5c5c" stroke-width="3" stroke-linejoin="round"/>
+    <g fill="#0f5c5c"><circle cx="30" cy="80" r="6"/><circle cx="105" cy="60" r="6"/><circle cx="255" cy="40" r="6"/><circle cx="330" cy="40" r="6"/></g>
+    <circle cx="180" cy="100" r="10" fill="#e8710a"/>
+    <text x="180" y="82" text-anchor="middle" font-size="12" font-weight="700" fill="#c25e05">최저점</text>
+    <g font-size="10.5" fill="#1d2a2a" text-anchor="middle">
+     <text x="30" y="128">1 검색 시작</text><text x="105" y="128">2 조건 입력</text><text x="180" y="128">3 결과 확인</text><text x="255" y="128">4 본문 만들기</text><text x="330" y="128">5 배포·회신</text>
+    </g>
+   </svg>
+   <p class="muted small" style="margin:6px 0 0">가장 힘든 순간(가설): 결과가 거의 없을 때 — 「이게 전부인가? 결국 사이트를 다시 다 돌아야 하나.」 감정 점수는 확인하지 않은 가설입니다.</p>
+  </div>
+
+  <div class="note">
+   <p style="margin:0"><b>계산</b> 목요일 검색 직후 공고가 나오면 월요일에 발견(+4일), 화요일에 배포(+5일)합니다. 6일짜리 공고는 남은 시간이 1일입니다. 최악의 경우이며 주말·실제 놓친 건수는 반영하지 않았습니다.</p>
+  </div>
+
+  <h3 style="margin-top:22px">기존 방식 → F-01 → 결과</h3>
+  <div class="flow">
+   <div class="st"><b>지금</b><br>월·목 여러 기관 사이트를 직접 검색하고, 화·금에 메일로 옮겨 적어 배포</div>
+   <div class="ar" aria-hidden="true">→</div>
+   <div class="st hl"><b>F-01</b><br>조건 입력 → 공고 목록(개찰까지 남은 일수) → 「메일 본문 복사」</div>
+   <div class="ar" aria-hidden="true">→</div>
+   <div class="st"><b>결과</b><br>동료·직원에게 바로 보낼 메일 본문</div>
+  </div>
+  <p class="muted small">시간이 얼마나 줄어드는지는 아직 측정하지 않았습니다(가설).</p>
+ </div>
+</section>
+
+<!-- ④ 시연 (Action) -->
+<section id="s4">
+ <div class="wrap">
+  <span class="tag">④ 시연</span>
+  <h2>「어린이」로 찾으면 이렇게 나옵니다</h2>
+  <p class="muted small"><span class="chip">예시 화면</span> 실제 자료로 계산한 값입니다. 기준일을 2025-11-10으로 두었습니다.</p>
+
+  <div class="preview" role="group" aria-label="앱 미리보기: 어린이로 검색한 결과 2건">
+   <div class="pv-head">부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기</div>
+   <div class="pv-cond">
+    <span>키워드 <b>어린이</b> · 최소 <b>5,000,000원</b> 이상 · 최대 <b>제한 없음</b> · 기준일 <b>2025-11-10</b></span>
+    <span>☑ 마감·개찰 지난 공고 포함 (켬 — 기본은 꺼짐이라 지난 공고를 뺍니다)</span>
+   </div>
+   <div class="pv-bar"><span>조건에 맞는 공고 2건 (기준일 2025-11-10)</span><span class="pv-btns"><i>메일 본문 복사</i><i>메일 작성 창 열기</i></span></div>
+   <div class="pv-item">
+    <div class="dday">D-22</div>
+    <div><div class="t">EDC 2단계 2공구 어린이공원 놀이시설 제작설치</div><div class="m">물품(내자) · 공고게시일 2025-11-10 · 개찰예정일 2025-12-02 · 345,454,545원</div></div>
+   </div>
+   <div class="pv-item">
+    <div class="dday past">개찰 지남<br>(13일 전)</div>
+    <div><div class="t">부산도시공사 직장어린이집 건립사업 기본 및 실시설계용역</div><div class="m">기술용역 · 공고게시일 2025-09-03 · 개찰예정일 2025-10-28 · 100,584,000원</div></div>
+   </div>
+  </div>
+
+  <a class="btn" href="./app.html">공고 찾기 시작</a>
+  <p class="muted small" style="margin-top:10px">앱 화면은 다음 단계에서 연결합니다 <span class="chip">준비 중</span></p>
+ </div>
+</section>
+
+<!-- ⑤ 테스트 결과 (자리만) -->
+<section class="alt" id="s5">
+ <div class="wrap">
+  <span class="tag">⑤ 테스트 결과</span>
+  <h2>구현 전에 기대 결과부터 정했습니다</h2>
+  <table>
+   <thead><tr><th>요구사항</th><th>확인할 것</th><th>결과</th></tr></thead>
+   <tbody>
+    <tr><td>R-01 정상</td><td>「어린이」 → 2건과 개찰까지 남은 일수</td><td><span class="chip">아직 실행 전</span></td></tr>
+    <tr><td>R-02 빈값</td><td>조건이 모두 비면 안내 문구</td><td><span class="chip">아직 실행 전</span></td></tr>
+    <tr><td>R-03 오류</td><td>잘못된 입력·자료에 없음·자료 불러오기 실패 안내</td><td><span class="chip">아직 실행 전</span></td></tr>
+    <tr><td>R-04 메일 본문</td><td>선택한 공고를 본문으로 복사</td><td><span class="chip">아직 실행 전</span></td></tr>
+    <tr><td>R-05 자료 선택</td><td>내 PC에서만 다른 자료를 고를 수 있음</td><td><span class="chip">아직 실행 전</span></td></tr>
+   </tbody>
+  </table>
+  <p class="muted small" style="margin-top:12px">단위 테스트 24개 · 통합 테스트 13개의 기대 결과를 구현 전에 정했습니다. 실제 실행 결과는 구현 뒤에 기록하며, 아직 실행하지 않은 검사는 통과로 표시하지 않습니다.</p>
+ </div>
+</section>
+
+<!-- ⑥ 활용 방안 · 현업 적용 · 다음 개선 -->
+<section id="s6">
+ <div class="wrap">
+  <span class="tag">⑥ 활용 방안 · 현업 적용 · 다음 개선</span>
+  <h2>주 2회 검색하는 입찰 담당자의 일을 줄이는 방향</h2>
+  <div class="three">
+   <div class="card"><h3>활용 방안</h3><p class="small muted" style="margin:0">교육 관련 입찰에 참여하는 소규모 기업의 입찰 담당자가 쓰는 검색·공유 도구입니다. <span class="chip">가설</span></p></div>
+   <div class="card"><h3>현업 적용</h3><p class="small muted" style="margin:0">월·목 검색을 이 화면으로 하고, 결과를 화·금 배포 메일의 본문으로 씁니다. <span class="chip">가설</span></p></div>
+   <div class="card"><h3>다음 개선</h3>
+    <ul class="muted">
+     <li>New·계속·변경·재공고·취소 표시</li>
+     <li>교육청·대학 게시판 자료 연결(이용 조건 확인 후)</li>
+     <li>자동 수집·알림(서버 필요)</li>
+     <li>조달청 API(인증키 필요)</li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- ⑦ 하단 (한계·출처) -->
+<footer id="s7">
+ <div class="wrap">
+  <p><strong>⑦ 수업 과제 데모 · 투자 판단 근거 아님</strong></p>
+  <p>이 페이지의 숫자는 부산도시공사 2025년 입찰공고 134건(공공데이터포털, 연 1회 갱신, 실시간 아님)에서 계산한 값입니다. 개찰예정일은 접수 마감과 다를 수 있어 공고 원문(나라장터)에서 확인해야 합니다. 교육청 등 다른 기관 자료는 이용 조건을 확인하지 못해 링크로만 안내합니다. 결제·광고·판매는 하지 않습니다.</p>
+  <p>페르소나·감정 점수·시간 절감은 확인하지 않은 가설입니다.</p>
+ </div>
+</footer>
+
+</body>
+</html>

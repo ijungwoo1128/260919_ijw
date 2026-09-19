@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기</title>
+<style>
+:root{--teal:#0f5c5c;--teal-d:#0a4444;--teal-l:#e6f2f1;--orange:#e8710a;--orange-d:#c25e05;--ink:#1d2a2a;--muted:#5b6b6b;--line:#dbe6e5;--bg:#f5f9f8;--warn:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:16px;word-break:keep-all;overflow-wrap:break-word}
+.head{background:var(--teal);color:#fff;padding:14px 0}
+.head .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.head b{font-size:17px;line-height:1.4;text-wrap:balance}
+.head a{color:#cfe9e6;font-size:14px}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+main{padding:22px 0 40px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.field.full{grid-column:1/-1}
+label{font-weight:700;font-size:14px}
+input[type=text]{font:inherit;padding:12px 14px;border:1px solid #b9cccb;border-radius:10px;width:100%;min-height:46px;background:#fff}
+input[type=text]:focus{outline:3px solid #b7dcd8;border-color:var(--teal)}
+.hint{font-size:13px;color:var(--muted)}
+.err{color:var(--warn);font-size:14px;font-weight:700}
+fieldset.groups{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;padding:10px 14px 12px;margin:0 0 14px;min-width:0}
+fieldset.groups legend{font-weight:700;font-size:14px;padding:0 6px}
+.gopt{display:flex;align-items:flex-start;gap:10px;padding:8px 0;min-height:44px;cursor:pointer}
+.gopt input{width:20px;height:20px;margin-top:3px;accent-color:var(--teal);flex:none}
+.gt{font-size:15px;line-height:1.45}
+.gd{font-size:13px;color:var(--muted)}
+.cnt{font-size:13px;color:var(--teal-d);font-weight:700;white-space:nowrap}
+.cnt.zero{color:var(--muted);font-weight:400}
+input[aria-invalid=true]{border-color:var(--warn);outline:2px solid #f3c4c0}
+.check{display:flex;align-items:center;gap:10px;font-size:15px;margin:2px 0 8px;min-height:44px}
+.check input{width:20px;height:20px;accent-color:var(--teal)}
+.srcline{font-size:13px;color:var(--muted);margin:6px 0}
+.actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:8px}
+button{font:inherit;font-weight:800;border-radius:12px;min-height:48px;padding:0 22px;cursor:pointer}
+.primary{background:var(--orange);color:#fff;border:0;box-shadow:0 2px 0 var(--orange-d)}
+.primary:hover,.primary:focus-visible{background:var(--orange-d);outline:3px solid #ffd7b0;outline-offset:2px}
+.secondary{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.secondary:hover,.secondary:focus-visible{background:var(--teal-l);outline:3px solid #b7dcd8;outline-offset:2px}
+#res{margin-top:22px}
+#summary{font-weight:800;font-size:18px;margin:0 0 4px}
+#synnote{font-size:14px;color:var(--teal-d);margin:0 0 6px}
+#list{list-style:none;margin:10px 0 0;padding:0;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.item{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.dday{font-size:30px;font-weight:800;color:var(--orange-d);line-height:1.1}
+.dday.past{font-size:15px;color:var(--muted);line-height:1.35;font-weight:700}
+.t{font-weight:700;line-height:1.45}
+.m{font-size:13.5px;color:var(--muted);margin-top:2px}
+footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
+@media (max-width:640px){
+ .grid{grid-template-columns:1fr}
+ .item{grid-template-columns:1fr;gap:6px}
+ .actions button{flex:1}
+}
+</style>
+</head>
+<body>
+<div class="head"><div class="wrap"><b>부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기</b><a href="./index.html">← 소개 페이지</a></div></div>
+
+<main class="wrap">
+ <form id="f" class="panel" autocomplete="off">
+  <div class="grid">
+   <div class="field full">
+    <label for="kw">키워드</label>
+    <input id="kw" type="text" aria-describedby="err-kw" placeholder="예: 어린이, 강사, 교육 (쉼표로 여러 개)">
+    <span id="err-kw" class="err" role="alert" hidden></span>
+    <span class="hint">「교육」을 입력하면 강사·연수·수련·어린이·놀이·어린이집·유치원·학교로 함께 찾습니다.</span>
+   </div>
+   <fieldset class="groups full" id="groups" aria-describedby="err-grp">
+    <legend>검색 대상 기관 <span class="hint">여러 개를 고를 수 있습니다. 기본은 1·2번입니다.</span></legend>
+    <label class="gopt" for="g1"><input id="g1" class="grp" type="checkbox" value="1" checked>
+     <span class="gt"><b>1. 부산광역시청·16개 구(군)·관계기관(출자출연·지방공기업)</b> <span class="cnt" id="cnt1"></span><br>
+     <span class="gd">보조금으로 사업을 집행하는 복지관·평생학습관·도서관 등</span></span></label>
+    <label class="gopt" for="g2"><input id="g2" class="grp" type="checkbox" value="2" checked>
+     <span class="gt"><b>2. 부산광역시교육청·5개 교육지원청·학교(초·중·고)·관계기관</b> <span class="cnt" id="cnt2"></span><br>
+     <span class="gd">보조금으로 사업을 집행하는 기관 및 단체</span></span></label>
+    <label class="gopt" for="g3"><input id="g3" class="grp" type="checkbox" value="3">
+     <span class="gt"><b>3. 국가기관(대한민국 정부 및 산하기관·단체)</b> <span class="cnt" id="cnt3"></span><br>
+     <span class="gd">정부부처 및 그 밖의 공공기관 등</span></span></label>
+    <label class="gopt" for="g4"><input id="g4" class="grp" type="checkbox" value="4">
+     <span class="gt"><b>4. 기타 기관</b> <span class="cnt" id="cnt4"></span><br>
+     <span class="gd">위에 해당하지 않는 타 기관까지</span></span></label>
+    <span id="err-grp" class="err" role="alert" hidden></span>
+   </fieldset>
+   <div class="field">
+    <label for="mn">최소 금액(원) 이상</label>
+    <input id="mn" type="text" inputmode="numeric" value="5,000,000" placeholder="예: 100,000,000">
+    <span class="hint">기본값은 5,000,000원 이상입니다. 비우면 최소 제한이 없습니다.</span>
+   </div>
+   <div class="field">
+    <label for="mx">최대 금액(원) 이하</label>
+    <input id="mx" type="text" inputmode="numeric" placeholder="제한 없음 (예: 100,000,000)">
+    <span class="hint">비워 두면 제한 없음(무한대)입니다.</span>
+   </div>
+   <div class="field">
+    <label for="bd">기준일</label>
+    <input id="bd" type="text" inputmode="numeric" placeholder="YYYY-MM-DD" maxlength="10">
+    <span class="hint">개찰까지 남은 일수를 이 날짜 기준으로 계산합니다. 기본값은 오늘 날짜입니다.</span>
+   </div>
+   <div class="field">
+    <label class="check" for="past"><input id="past" type="checkbox"> 마감·개찰 지난 공고 포함</label>
+    <span class="hint">기본은 마감·개찰이 지난 공고를 뺍니다. 켜면 지난 공고도 함께 보입니다.</span>
+   </div>
+  </div>
+  <p class="srcline"></p>
+  <div class="actions">
+   <button type="button" id="clr" class="secondary">조건 지우기</button>
+   <button type="submit" class="primary">공고 찾기</button>
+  </div>
+ </form>
+
+ <section id="res" aria-live="polite" hidden>
+  <p id="summary"></p>
+  <p id="synnote"></p>
+  <p class="srcline"></p>
+  <ul id="list"></ul>
+ </section>
+</main>
+
+<footer class="wrap">
+ <p class="srcline"></p>
+ <p>수업 과제 데모 · 투자 판단 근거 아님 · 개찰예정일은 접수 마감과 다를 수 있어 공고 원문(나라장터)에서 확인해야 합니다.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var data = window.BUSAN_BIDS;
+
+  function fillSource() {
+    var els = document.querySelectorAll('.srcline');
+    for (var i = 0; i < els.length; i++) els[i].textContent = sourceLine(data);
+  }
+
+  function clearResults() {
+    $('res').hidden = true;
+    $('summary').textContent = '';
+    $('synnote').textContent = '';
+    $('list').textContent = '';
+  }
+
+  function render(items, base, usedEdu) {
+    $('summary').textContent = summaryLine(items.length, base);
+    $('synnote').textContent = usedEdu ? SYNONYM_NOTE : '';
+    var ul = $('list');
+    ul.textContent = '';
+    items.forEach(function (it) {
+      var r = it.row;
+      var li = document.createElement('li'); li.className = 'item';
+      var d = document.createElement('div');
+      d.className = 'dday' + (it.days < 0 ? ' past' : '');
+      d.textContent = formatRemaining(it.days);
+      d.setAttribute('aria-label', '개찰까지 ' + formatRemaining(it.days));
+      var b = document.createElement('div');
+      var t = document.createElement('div'); t.className = 't'; t.textContent = r.title;
+      var m = document.createElement('div'); m.className = 'm';
+      m.textContent = [r.type, '공고게시일 ' + r.posted, '개찰예정일 ' + r.open, formatPrice(r)].join(' · ');
+      b.appendChild(t); b.appendChild(m);
+      li.appendChild(d); li.appendChild(b);
+      ul.appendChild(li);
+    });
+    $('res').hidden = false;
+  }
+
+  function showError(msg) {
+    var e = $('err-kw');
+    e.textContent = msg; e.hidden = false;
+    $('kw').setAttribute('aria-invalid', 'true');
+  }
+
+  function hideError() {
+    var e = $('err-kw');
+    e.textContent = ''; e.hidden = true;
+    $('kw').removeAttribute('aria-invalid');
+  }
+
+  var searched = false;   // 검색을 한 번이라도 했으면 「지난 공고 포함」·검색 대상 기관을 바꿀 때 바로 다시 찾는다
+
+  // 검색 대상 기관(1~4) 체크 읽기·쓰기·안내
+  function selectedGroups() {
+    var out = [];
+    for (var i = 1; i <= 4; i++) if ($('g' + i).checked) out.push(i);
+    return out;
+  }
+  function setGroups(list) {
+    for (var i = 1; i <= 4; i++) $('g' + i).checked = list.indexOf(i) !== -1;
+  }
+  function showGroupError(msg) {
+    var e = $('err-grp');
+    e.textContent = msg || ''; e.hidden = !msg;
+  }
+  function fillGroupCounts() {
+    var c = countByGroup(data.rows);
+    for (var i = 1; i <= 4; i++) {
+      $('cnt' + i).textContent = '(이 자료 ' + c[i] + '건)';
+      $('cnt' + i).className = 'cnt' + (c[i] === 0 ? ' zero' : '');
+    }
+  }
+
+  function search() {
+    hideError();
+    var gv = validateGroups(selectedGroups());
+    showGroupError(gv.ok ? '' : gv.message);
+    // R-02: 조건이 모두 비었으면 안내만 보여 주고 이전 결과도 지운다
+    var v = validateConditions({ keywords: $('kw').value, min: $('mn').value, max: $('mx').value, baseDate: $('bd').value });
+    if (!v.ok) { clearResults(); showError(v.message); return; }
+    if (!gv.ok) { clearResults(); return; }   // 기관을 하나도 안 골랐으면 안내만 보이고 결과는 없다
+    searched = true;
+    var tokens = parseKeywords($('kw').value);
+    var kws = expandKeywords(tokens);
+    var mn = parseAmount($('mn').value), mx = parseAmount($('mx').value);
+    var base = $('bd').value.trim();
+    // R-03(형식 오류) 안내는 아직 구현 전이라, 금액·기준일 형식이 틀리면 아무것도 하지 않는다.
+    if (!mn.ok || !mx.ok || isNaN(toUtc(base))) return;
+    var found = filterBids(data.rows, { keywords: kws, min: mn.value, max: mx.value, excludeClosed: !$('past').checked, baseDate: base, groups: selectedGroups() });
+    if (!found.length) { clearResults(); return; }   // 0건 안내(R-03b)는 아직 없다
+    render(sortBids(found, base), base, tokens.indexOf('교육') !== -1);
+  }
+
+  $('f').addEventListener('submit', function (e) { e.preventDefault(); search(); });
+  $('past').addEventListener('change', function () { if (searched) search(); });
+  for (var gi = 1; gi <= 4; gi++) {
+    $('g' + gi).addEventListener('change', function () {
+      var gv = validateGroups(selectedGroups());
+      showGroupError(gv.ok ? '' : gv.message);   // 검색 전에도 하나도 안 골랐으면 바로 안내
+      if (searched) search();
+    });
+  }
+  $('clr').addEventListener('click', function () {
+    $('kw').value = ''; $('mn').value = DEFAULT_MIN_TEXT; $('mx').value = ''; $('bd').value = todayText(); $('past').checked = false;
+    setGroups(DEFAULT_GROUPS); showGroupError('');
+    hideError();
+    clearResults();
+    searched = false;
+    $('kw').focus();
+  });
+
+  $('bd').value = todayText();
+  $('mn').value = DEFAULT_MIN_TEXT;
+  setGroups(DEFAULT_GROUPS);
+  fillGroupCounts();
+  fillSource();
+})();
+</script>
+</body>
+</html>
