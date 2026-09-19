@@ -47,6 +47,8 @@ button{font:inherit;font-weight:800;border-radius:12px;min-height:48px;padding:0
 #list{list-style:none;margin:10px 0 0;padding:0;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .item{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:0}
+.dday.unk{font-size:16px;line-height:1.3}
+.lk{color:var(--teal);font-weight:700;font-size:14px}
 .dday{font-size:30px;font-weight:800;color:var(--orange-d);line-height:1.1}
 .dday.past{font-size:15px;color:var(--muted);line-height:1.35;font-weight:700}
 .t{font-weight:700;line-height:1.45}
@@ -124,19 +126,25 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 
 <footer class="wrap">
  <p class="srcline"></p>
- <p>수업 과제 데모 · 투자 판단 근거 아님 · 개찰예정일은 접수 마감과 다를 수 있어 공고 원문(나라장터)에서 확인해야 합니다.</p>
+ <p>수업 과제 데모 · 투자 판단 근거 아님 · 개찰·입찰 일시는 접수 마감과 다를 수 있고 교육청 자료에는 금액이 없어, 반드시 공고 원문에서 확인해야 합니다.</p>
 </footer>
 
 <script src="data.js"></script>
+<script src="data_pen.js"></script>
 <script src="app.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var data = window.BUSAN_BIDS;
+  // 공개 자료 두 묶음(부산도시공사 CSV · 교육청 학교입찰정보)을 한 목록으로 합친다. data_pen.js가 없어도 동작한다.
+  var sources = [window.BUSAN_BIDS];
+  if (window.PEN_BIDS && window.PEN_BIDS.rows) sources.push(window.PEN_BIDS);
+  var data = { rows: [] };
+  sources.forEach(function (s) { data.rows = data.rows.concat(s.rows); });
 
   function fillSource() {
     var els = document.querySelectorAll('.srcline');
-    for (var i = 0; i < els.length; i++) els[i].textContent = sourceLine(data);
+    var line = sources.map(sourceLine).join(' / ');
+    for (var i = 0; i < els.length; i++) els[i].textContent = line;
   }
 
   function clearResults() {
@@ -155,14 +163,18 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
       var r = it.row;
       var li = document.createElement('li'); li.className = 'item';
       var d = document.createElement('div');
-      d.className = 'dday' + (it.days < 0 ? ' past' : '');
+      d.className = 'dday' + (isNaN(it.days) ? ' unk' : it.days < 0 ? ' past' : '');
       d.textContent = formatRemaining(it.days);
       d.setAttribute('aria-label', '개찰까지 ' + formatRemaining(it.days));
       var b = document.createElement('div');
       var t = document.createElement('div'); t.className = 't'; t.textContent = r.title;
       var m = document.createElement('div'); m.className = 'm';
-      m.textContent = [r.type, '공고게시일 ' + r.posted, '개찰예정일 ' + r.open, formatPrice(r)].join(' · ');
+      m.textContent = [r.status === '취소' ? '【취소된 공고】' : '', r.org, r.type, '공고게시일 ' + r.posted, r.open ? (r.openText ? '입찰일시 ' + r.openText : '개찰예정일 ' + r.open) : '입찰일시 ' + (r.openText || '미확인'), formatPrice(r)].filter(Boolean).join(' · ');
       b.appendChild(t); b.appendChild(m);
+      if (r.url) {
+        var a = document.createElement('a'); a.className = 'lk'; a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        a.textContent = '공고 원문 보기 (새 창)'; m.appendChild(document.createElement('br')); m.appendChild(a);
+      }
       li.appendChild(d); li.appendChild(b);
       ul.appendChild(li);
     });

@@ -44,6 +44,7 @@ function daysUntil(openDate, baseDate) {
 }
 
 function formatRemaining(days) {
+  if (isNaN(days)) return '개찰일 확인 필요';   // 게시판 표기에서 날짜를 못 읽은 공고
   if (days > 0) return 'D-' + days;
   if (days === 0) return 'D-day';
   return `개찰 지남(${-days}일 전)`;
@@ -55,6 +56,7 @@ function formatWon(n) {
 
 // 원본 금액 표기가 깨진 행은 확인 필요를 붙인다
 function formatPrice(row) {
+  if (row.price == null) return '금액 미기재';   // 교육청 게시판 목록에는 금액이 없다
   return formatWon(row.price) + (row.priceNote ? ' (원본 표기 확인 필요)' : '');
 }
 
@@ -64,20 +66,24 @@ function filterBids(rows, cond) {
   const min = cond.min ?? null, max = cond.max ?? null;
   return rows.filter(r => {
     if (kws.length && !kws.some(k => r.title.includes(k))) return false;
-    if (min !== null && !(r.price >= min)) return false;
-    if (max !== null && !(r.price <= max)) return false;
+    if (r.price != null) {   // 금액을 모르는(미기재) 공고는 금액 조건으로 빼지 않는다
+      if (min !== null && !(r.price >= min)) return false;
+      if (max !== null && !(r.price <= max)) return false;
+    }
     if (cond.groups && !cond.groups.includes(r.cat ?? 4)) return false;   // 검색 대상 기관: 고른 번호(1~4)에 속한 공고만
     if (cond.excludeClosed && daysUntil(r.open, cond.baseDate) < 0) return false;   // 개찰일이 기준일과 같으면 남긴다
     return true;
   });
 }
 
-// 개찰 전(남은 일수 적은 순) → 개찰 지난 것(가까운 순)
+// 개찰 전(남은 일수 적은 순) → 개찰 지난 것(가까운 순) → 개찰일을 모르는 것
 function sortBids(rows, baseDate) {
   const items = rows.map(row => ({ row, days: daysUntil(row.open, baseDate) }));
   items.sort((a, b) => {
-    const ga = a.days >= 0 ? 0 : 1, gb = b.days >= 0 ? 0 : 1;
+    const grp = d => (isNaN(d) ? 2 : d >= 0 ? 0 : 1);
+    const ga = grp(a.days), gb = grp(b.days);
     if (ga !== gb) return ga - gb;
+    if (ga === 2) return 0;
     return ga === 0 ? a.days - b.days : b.days - a.days;
   });
   return items;
@@ -87,7 +93,7 @@ function sortBids(rows, baseDate) {
 function emptyResultText(excludeClosed) {
   return {
     title: '조건에 맞는 공고가 이 자료에 없습니다.',
-    body: '이 자료는 부산도시공사 2025년 공고 134건뿐입니다. 키워드를 줄이거나 금액 범위를 넓혀 보세요. ' +
+    body: '이 자료는 부산도시공사 2025년 공고와 부산광역시교육청 학교입찰정보 최근 3개월분뿐입니다. 키워드를 줄이거나 금액 범위를 넓혀 보세요. ' +
       '「교육」을 입력하면 강사·연수·수련·어린이·놀이·어린이집·유치원·학교로 함께 찾습니다.' +
       (excludeClosed ? ' ' + CLOSED_HINT : ''),
   };
