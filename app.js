@@ -90,12 +90,15 @@ function sortBids(rows, baseDate) {
   return items;
 }
 
-// 결과가 없을 때 안내 (R-03b에서 화면에 쓴다. 지금은 UT-01g가 「제외 켬」 문구를 검사하려고 먼저 둔다)
-function emptyResultText(excludeClosed) {
+// 결과가 없을 때 안내 (R-03b). opts = { hasExclude, groupCount } — 제외 키워드를 썼거나 기관을 5개 미만으로 골랐으면 그에 맞는 조언을 덧붙인다.
+function emptyResultText(excludeClosed, opts) {
+  const o = opts || {};
   return {
     title: '조건에 맞는 공고가 이 자료에 없습니다.',
-    body: '이 자료는 부산도시공사 2025년 공고와 부산광역시교육청 학교입찰정보 최근 3개월분뿐입니다. 키워드를 줄이거나 금액 범위를 넓혀 보세요. ' +
+    body: '이 자료는 도시공사·시청·구(군)·교육청·교육지원청·대학·공공기관의 공개 게시판에서 모은 것뿐입니다. 키워드를 줄이거나 금액 범위를 넓혀 보세요. ' +
       '「교육」을 입력하면 강사·연수·수련·어린이·놀이·어린이집·유치원·학교로 함께 찾습니다.' +
+      (o.hasExclude ? ' 제외 키워드를 줄이거나 지워 보세요.' : '') +
+      (o.groupCount && o.groupCount < 5 ? ` 검색 대상 기관을 더 골라 보세요(지금 ${o.groupCount}개 선택).` : '') +
       (excludeClosed ? ' ' + CLOSED_HINT : ''),
   };
 }

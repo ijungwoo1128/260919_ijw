@@ -160,6 +160,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 <script src="data_univ.js"></script>
 <script src="data_alio.js"></script>
 <script src="data_g2b.js"></script>
+<script src="data_ofc.js"></script>
 <script src="data_pen.js"></script>
 <script src="app.js"></script>
 <script>
@@ -167,7 +168,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   var $ = function (id) { return document.getElementById(id); };
   // 공개 자료 두 묶음(부산도시공사 CSV · 교육청 학교입찰정보)을 한 목록으로 합친다. data_pen.js가 없어도 동작한다.
   var sources = [window.BUSAN_BIDS];
-  [window.BUSAN_CITY_BIDS, window.BUSAN_GU_BIDS, window.BUSAN_UNIV_BIDS, window.ALIO_BIDS, window.G2B_BIDS, window.PEN_BIDS].forEach(function (x) { if (x && x.rows && x.rows.length) sources.push(x); });   // 자료가 비어 있는 곳(나라장터 수집 전)은 출처 줄에도 넣지 않는다
+  [window.BUSAN_CITY_BIDS, window.BUSAN_GU_BIDS, window.BUSAN_UNIV_BIDS, window.ALIO_BIDS, window.G2B_BIDS, window.OFC_BIDS, window.PEN_BIDS].forEach(function (x) { if (x && x.rows && x.rows.length) sources.push(x); });   // 자료가 비어 있는 곳(나라장터 수집 전)은 출처 줄에도 넣지 않는다
   var data = { rows: [] };
   sources.forEach(function (s) { data.rows = data.rows.concat(s.rows); });
 
@@ -183,6 +184,17 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     $('summary').textContent = '';
     $('synnote').textContent = '';
     $('list').textContent = '';
+  }
+
+  // R-03b: 조건에 맞는 공고가 없을 때. 이유와 다음에 할 일을 알려 주고, 같은 조건의 링크는 주소창에 남긴다.
+  function renderEmpty(state, exs) {
+    var e = emptyResultText(!$('past').checked, { hasExclude: exs.length > 0, groupCount: state.groups.length });
+    $('summary').textContent = e.title;
+    $('synnote').textContent = e.body;
+    $('list').textContent = '';
+    $('share').hidden = true;
+    setAddress(shareQuery(state));
+    $('res').hidden = false;
   }
 
   function render(items, base, usedEdu, exclude, state) {
@@ -215,6 +227,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     var link = pageUrl() + (shareQuery(state) ? '?' + shareQuery(state) : '');
     $('sharetext').value = buildShareText({ base: base, items: items, kw: state.kw, ex: state.ex, mn: state.mn, mx: state.mx, past: state.past, groups: state.groups, link: link });
     $('sharemsg').textContent = '';
+    $('share').hidden = false;
     $('filenote').hidden = location.protocol !== 'file:';
     shareLink = link;
     setAddress(shareQuery(state));
@@ -297,8 +310,8 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     // R-03(형식 오류) 안내는 아직 구현 전이라, 금액·기준일 형식이 틀리면 아무것도 하지 않는다.
     if (!mn.ok || !mx.ok || isNaN(toUtc(base))) return;
     var found = filterBids(data.rows, { keywords: kws, exclude: exs, min: mn.value, max: mx.value, excludeClosed: !$('past').checked, baseDate: base, groups: selectedGroups() });
-    if (!found.length) { clearResults(); return; }   // 0건 안내(R-03b)는 아직 없다
     var state = { kw: $('kw').value, ex: $('ex').value, mn: $('mn').value, mx: $('mx').value, bd: $('bd').value, past: $('past').checked, groups: selectedGroups() };
+    if (!found.length) { renderEmpty(state, exs); return; }   // R-03b: 0건이면 이유와 다음 행동을 안내한다
     render(sortBids(found, base), base, tokens.indexOf('교육') !== -1, exs, state);
   }
 

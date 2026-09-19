@@ -62,7 +62,7 @@ t('UT-01f', '금액 표시: 「345,454,545원」 · 원본 표기 오류는 「(
 t('UT-01g', '지난 공고 제외(기본): 기준일 11-10→1건 · 12-23→0건 · 개찰 당일(12-02)은 남김 · 안내 문구(「마감·개찰 지난 공고 포함」)', function () {
   var q = function (base) { return filterBids(rows, { keywords: ['어린이'], excludeClosed: true, baseDate: base }); };
   var e1 = emptyResultText(true), e0 = emptyResultText(false);
-  var base = '이 자료는 부산도시공사 2025년 공고와 부산광역시교육청 학교입찰정보 최근 3개월분뿐입니다. 키워드를 줄이거나 금액 범위를 넓혀 보세요. 「교육」을 입력하면 강사·연수·수련·어린이·놀이·어린이집·유치원·학교로 함께 찾습니다.';
+  var base = '이 자료는 도시공사·시청·구(군)·교육청·교육지원청·대학·공공기관의 공개 게시판에서 모은 것뿐입니다. 키워드를 줄이거나 금액 범위를 넓혀 보세요. 「교육」을 입력하면 강사·연수·수련·어린이·놀이·어린이집·유치원·학교로 함께 찾습니다.';
   var hint = '「마감·개찰 지난 공고 포함」을 켜면 지난 공고도 볼 수 있습니다.';
   return q('2025-11-10').length === 1 && q('2025-11-10')[0].title === PLAY && q('2025-12-23').length === 0 &&
     q('2025-12-02').length === 1 &&
@@ -168,6 +168,13 @@ t('UT-13d', '검사: 제외 키워드만 넣어도 빈 조건이 아님 · 같�
     summaryLine(3, '2026-09-19', []) === '조건에 맞는 공고 3건 (기준일 2026-09-19)' && summaryLine(3, '2026-09-19') === '조건에 맞는 공고 3건 (기준일 2026-09-19)';
 });
 
+t('UT-17', '0건 안내(R-03b): 기본 문구 · 제외 키워드를 썼으면 「제외 키워드를 줄이거나 지워 보세요.」 · 기관을 5개 미만 골랐으면 「검색 대상 기관을 더 골라 보세요(지금 N개 선택).」 · 5개 다 고르면 그 문구 없음 · 지난 공고 안내는 맨 뒤', function () {
+  var b0 = emptyResultText(false).body, b1 = emptyResultText(false, { hasExclude: true, groupCount: 2 }).body, b2 = emptyResultText(true, { hasExclude: false, groupCount: 5 }).body;
+  var b3 = emptyResultText(true, { hasExclude: true, groupCount: 1 }).body;
+  return b0.indexOf('제외 키워드를') === -1 && b0.indexOf('검색 대상 기관을 더') === -1 && b1 === b0 + ' 제외 키워드를 줄이거나 지워 보세요. 검색 대상 기관을 더 골라 보세요(지금 2개 선택).' &&
+    b2 === b0 + ' ' + '「마감·개찰 지난 공고 포함」을 켜면 지난 공고도 볼 수 있습니다.' &&
+    b3 === b0 + ' 제외 키워드를 줄이거나 지워 보세요. 검색 대상 기관을 더 골라 보세요(지금 1개 선택). 「마감·개찰 지난 공고 포함」을 켜면 지난 공고도 볼 수 있습니다.';
+});
 var st = function (o) { return Object.assign({ kw: '', ex: '', mn: '5,000,000', mx: '', bd: '2026-09-19', past: false, groups: [1, 2] }, o || {}); };
 t('UT-15a', '공유 링크 만들기: 기본 조건은 주소에 안 담김 · 키워드·제외·최대금액·지난 공고·기관을 담음 · 기준일은 오늘과 다를 때만 · 최소 금액을 비우면 「mn=」', function () {
   var today = '2026-09-19';
