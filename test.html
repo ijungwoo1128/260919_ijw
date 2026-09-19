@@ -142,6 +142,32 @@ t('UT-08b', '개찰일을 모르는(open=null) 공고: 남은 일수 표시 「�
   return formatRemaining(NaN) === '개찰일 확인 필요' && kept === '가나라' && order === '라나다가';
 });
 
+var fx = [
+  { title: '가 급식 식재료 구매', price: 9000000, open: '2026-10-01', cat: 2 }, { title: '나 수학여행 위탁 용역', price: 9000000, open: '2026-10-01', cat: 2 },
+  { title: '다 교복 구매 입찰', price: 9000000, open: '2026-10-01', cat: 2 }, { title: '라 청소년 캠프 운영', price: 9000000, open: '2026-10-01', cat: 2 },
+  { title: '마 어린이 체험 위탁', price: 9000000, open: '2026-10-01', cat: 2 }, { title: '바 시설 공사', price: 9000000, open: '2026-10-01', cat: 2 }
+];
+var qx = function (kw, ex) { return filterBids(fx, { keywords: kw, exclude: ex }).map(function (r) { return r.title[0]; }).join(''); };
+t('UT-13a', '키워드 2개 이상은 하나라도 맞으면 통과(OR): [수학여행,캠프]→나라 · [위탁,구매]→가나다마 · 키워드 없으면 전부', function () {
+  return qx(['수학여행', '캠프'], []) === '나라' && qx(['위탁', '구매'], []) === '가나다마' && qx([], []) === '가나다라마바' && qx(['없는말'], []) === '';
+});
+t('UT-13b', '제외 키워드 1개: 급식 제외 → 가만 빠짐 · 제외 없음(빈 목록·undefined)은 그대로', function () {
+  return qx([], ['급식']) === '나다라마바' && qx([], []) === '가나다라마바' && filterBids(fx, { keywords: [] }).length === 6;
+});
+t('UT-13c', '제외 키워드 2개 이상: [급식,교복]→나라마바 · [급식,교복,공사]→나라마 · 키워드와 함께 [위탁,구매]에서 [교복] 제외→가나마', function () {
+  return qx([], ['급식', '교복']) === '나라마바' && qx([], ['급식', '교복', '공사']) === '나라마' && qx(['위탁', '구매'], ['교복']) === '가나마' &&
+    qx(['위탁', '구매'], ['급식', '교복', '수학여행']) === '마';
+});
+t('UT-13d', '검사: 제외 키워드만 넣어도 빈 조건이 아님 · 같은 낱말이 키워드와 제외에 함께 있으면 CONFLICT와 안내 · 겹치지 않으면 통과 · 제외 표시 문구', function () {
+  var v = function (k, x) { return validateConditions({ keywords: k, exclude: x, min: '5,000,000', max: '', baseDate: '2026-09-19' }); };
+  var c = v('급식, 위탁', '교복, 급식');
+  return v('', '급식').ok === true && v('', '급식, 교복').ok === true && v('', '').code === 'EMPTY' && v(' ', ' , ').code === 'EMPTY' &&
+    c.ok === false && c.code === 'CONFLICT' && c.message === '키워드와 제외 키워드에 같은 낱말이 있습니다: 급식. 한쪽에서 빼 주세요.' &&
+    v('위탁', '급식, 교복').ok === true &&
+    summaryLine(3, '2026-09-19', ['급식', '교복']) === '조건에 맞는 공고 3건 (기준일 2026-09-19) · 제외 키워드: 급식, 교복' &&
+    summaryLine(3, '2026-09-19', []) === '조건에 맞는 공고 3건 (기준일 2026-09-19)' && summaryLine(3, '2026-09-19') === '조건에 맞는 공고 3건 (기준일 2026-09-19)';
+});
+
 var out = document.getElementById('out'), pass = 0;
 T.forEach(function (x) {
   if (x[2]) pass++;

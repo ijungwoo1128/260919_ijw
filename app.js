@@ -1,6 +1,6 @@
 // 부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기 — 계산·검사는 이 파일의 함수만 한다.
 // 데이터는 data.js의 window.BUSAN_BIDS를 읽는다. 화면 연결(DOM)은 app.html에 있다.
-// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택). R-03 오류·R-04 메일 본문·R-05 자료 선택은 아직 없다.
+// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택) · 제외 키워드(수강생 요청 2026-09-19). R-03 오류·R-04 메일 본문·R-05 자료 선택은 아직 없다.
 
 // 「교육」은 공고명에 거의 안 나오므로 함께 찾을 동의어 (requirements.md R-01)
 const SYNONYMS_EDU = ['교육', '강사', '연수', '수련', '어린이', '놀이', '어린이집', '유치원', '학교'];
@@ -62,10 +62,11 @@ function formatPrice(row) {
 
 // 조건: { keywords:[확장된 키워드], min, max, excludeClosed, baseDate } — 키워드는 공고명 부분일치(OR), 금액은 경계 포함
 function filterBids(rows, cond) {
-  const kws = cond.keywords || [];
+  const kws = cond.keywords || [], exs = cond.exclude || [];
   const min = cond.min ?? null, max = cond.max ?? null;
   return rows.filter(r => {
-    if (kws.length && !kws.some(k => r.title.includes(k))) return false;
+    if (kws.length && !kws.some(k => r.title.includes(k))) return false;   // 키워드: 하나라도 공고명에 있으면 통과(OR)
+    if (exs.length && exs.some(k => r.title.includes(k))) return false;   // 제외 키워드: 하나라도 공고명에 있으면 뺀다(2개 이상 가능)
     if (r.price != null) {   // 금액을 모르는(미기재) 공고는 금액 조건으로 빼지 않는다
       if (min !== null && !(r.price >= min)) return false;
       if (max !== null && !(r.price <= max)) return false;
@@ -121,7 +122,11 @@ function validateConditions(input) {
   const minParsed = parseAmount(minRaw);
   const minUntouched = minRaw === '' || (minParsed.ok && minParsed.value === DEFAULT_MIN);
   const noMax = String(input.max ?? '').trim() === '';
-  if (noKeyword && minUntouched && noMax) return { ok: false, code: 'EMPTY', message: MSG_EMPTY };
+  const excludes = parseKeywords(input.exclude);
+  if (noKeyword && excludes.length === 0 && minUntouched && noMax) return { ok: false, code: 'EMPTY', message: MSG_EMPTY };
+  // 같은 낱말이 키워드와 제외 키워드에 모두 있으면 결과가 항상 0건이라 먼저 알려 준다
+  const both = parseKeywords(input.keywords).filter((k, i, a) => a.indexOf(k) === i && excludes.includes(k));
+  if (both.length) return { ok: false, code: 'CONFLICT', message: `키워드와 제외 키워드에 같은 낱말이 있습니다: ${both.join(', ')}. 한쪽에서 빼 주세요.` };
   return { ok: true };
 }
 
@@ -154,6 +159,6 @@ function sourceLine(meta) {
   return `출처: ${meta.source} · ${meta.period.from}~${meta.period.to} 공고분 · ${meta.updateNote} · ${meta.fetched} 수집`;
 }
 
-function summaryLine(count, baseDate) {
-  return `조건에 맞는 공고 ${count}건 (기준일 ${baseDate})`;
+function summaryLine(count, baseDate, exclude) {
+  return `조건에 맞는 공고 ${count}건 (기준일 ${baseDate})` + (exclude && exclude.length ? ` · 제외 키워드: ${exclude.join(', ')}` : '');
 }
