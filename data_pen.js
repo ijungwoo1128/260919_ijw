@@ -8,7 +8,7 @@ window.PEN_BIDS = {
   "to": "2026-09-18"
  },
  "updateNote": "수집할 때마다 갱신",
- "fetched": "2026-09-19",
+ "fetched": "2026-09-20",
  "excludedResults": 43,
  "rows": [
   {

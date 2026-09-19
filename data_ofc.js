@@ -4,11 +4,11 @@ window.OFC_BIDS = {
  "url": "https://home.pen.go.kr/nambu/main.do",
  "license": "공개 게시판의 제목·기관·입찰일시·등록일·원문 링크만 담음(급식 식재료·결과 안내 제외). 내용은 반드시 원문에서 확인",
  "period": {
-  "from": "2026-08-20",
+  "from": "2026-08-26",
   "to": "2026-09-18"
  },
  "updateNote": "수집할 때마다 갱신",
- "fetched": "2026-09-19",
+ "fetched": "2026-09-20",
  "per": {
   "서부·학교입찰정보": {
    "scanned": 11,
@@ -21,7 +21,7 @@ window.OFC_BIDS = {
    "pages": 3
   },
   "남부·학교입찰": {
-   "scanned": 36,
+   "scanned": 32,
    "kept": 2,
    "pages": 5
   },
@@ -31,13 +31,13 @@ window.OFC_BIDS = {
    "pages": 2
   },
   "북부·학교입찰공고": {
-   "scanned": 45,
-   "kept": 3,
+   "scanned": 43,
+   "kept": 2,
    "pages": 6
   },
   "동래·학교 입찰공고": {
-   "scanned": 26,
-   "kept": 5,
+   "scanned": 22,
+   "kept": 3,
    "pages": 4
   },
   "해운대·교육지원청 입찰공고": {
@@ -461,51 +461,6 @@ window.OFC_BIDS = {
    "price": null,
    "priceNote": "",
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11866&bbsId=3991&nttSn=1013549"
-  },
-  {
-   "no": "1081",
-   "org": "연천중학교",
-   "cat": 2,
-   "type": "동래교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-08-20",
-   "title": "2027학년도 연천중학교 교복(동복,생활하복)학교주관구매 2단계 입찰 재공고",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1013040"
-  },
-  {
-   "no": "1083",
-   "org": "토현중학교",
-   "cat": 2,
-   "type": "동래교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-08-20",
-   "title": "토현중학교 인조잔디 운동장 조성공사 소액수의 공고",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1013097"
-  },
-  {
-   "no": "4295",
-   "org": "명원초등학교",
-   "cat": 2,
-   "type": "북부교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-08-20",
-   "title": "명원초등학교 2026학년도 2학기 방과후프로그램 교재(교구) 구입 소액수의 견적제출 안내 공고",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12815&bbsId=3722&nttSn=1013038"
   }
  ]
 };
