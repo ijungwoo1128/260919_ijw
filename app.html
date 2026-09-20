@@ -57,6 +57,9 @@ button{font:inherit;font-weight:800;border-radius:12px;min-height:48px;padding:0
 .linkbtn:hover,.linkbtn:focus-visible{background:var(--teal-l);outline:3px solid #b7dcd8;outline-offset:1px}
 .pick{display:flex;align-items:flex-start;gap:8px;cursor:pointer}
 .pick input{width:22px;height:22px;margin-top:1px;accent-color:var(--teal);flex:none}
+.stchip{display:inline-block;background:var(--teal-l);color:var(--teal-d);border-radius:999px;padding:0 10px;font-weight:700;font-size:12.5px;margin-right:6px}
+.m2{font-size:13px;color:var(--muted);margin-top:2px}
+fieldset.groups:disabled{opacity:.55}
 .no{display:inline-block;min-width:2em;color:var(--orange-d);font-weight:800}
 #summary{font-weight:800;font-size:18px;margin:0 0 4px}
 #synnote{font-size:14px;color:var(--teal-d);margin:0 0 6px}
@@ -84,6 +87,15 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
  <p id="loaderr" class="err loaderr" role="alert" hidden></p>
  <form id="f" class="panel" autocomplete="off">
   <div class="grid">
+   <!-- R-05: 내 PC에 data_pilot.js(비공개)가 있을 때만 보인다. 공개 배포에서는 항상 숨김 -->
+   <fieldset class="groups full" id="srcsel" hidden>
+    <legend>자료 <span class="hint">이 PC에서만 보입니다.</span></legend>
+    <label class="gopt" for="src-public"><input id="src-public" type="radio" name="src" value="public" checked>
+     <span class="gt"><b>공개 자료</b> <span class="gd">도시공사·시청·구(군)·교육청·교육지원청·대학·공공기관</span></span></label>
+    <label class="gopt" for="src-pilot"><input id="src-pilot" type="radio" name="src" value="pilot">
+     <span class="gt"><b>기존 수집 자료(비공개)</b> <span class="gd" id="pilotdesc"></span><br>
+     <span class="gd">기관 구분 없이 모두 찾고, 마감일·이력과 담당자(게시자)·연락처를 보여 줍니다.</span></span></label>
+   </fieldset>
    <div class="field full">
     <label for="kw">키워드</label>
     <input id="kw" type="text" aria-describedby="err-kw" placeholder="예: 어린이, 강사, 교육 (쉼표로 여러 개)">
@@ -183,6 +195,8 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 <script src="data_g2b.js"></script>
 <script src="data_ofc.js"></script>
 <script src="data_pen.js"></script>
+<!-- 비공개 자료(R-05): 내 PC(파일로 열기·localhost)에서만 불러온다. 공개 배포 주소에서는 요청 자체를 하지 않는다 -->
+<script>if (location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) document.write('<script src="data_pilot.js"><\/script>');</script>
 <script src="app.js"></script>
 <script>
 (function () {
@@ -201,9 +215,18 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   var data = { rows: [] };
   sources.forEach(function (s) { s.rows.forEach(function (r) { r._src = s; }); data.rows = data.rows.concat(s.rows); });   // 각 공고가 어느 자료에서 왔는지(메일 본문 출처 줄용)
 
+  // R-05: 기존 수집 자료(비공개). data_pilot.js가 없으면 pilotRows가 비어 「자료」 선택은 나타나지 않는다(오류 아님).
+  var pilotMeta = window.BUSAN_PILOT, pilotRows = [];
+  if (availableSources(pilotMeta).indexOf('pilot') !== -1) {
+    pilotRows = pilotMeta.rows.map(function (r) { return normalizeRow('pilot', r); });
+    $('srcsel').hidden = false;
+    $('pilotdesc').textContent = pilotRows.length + '건 · ' + pilotMeta.period.from + '~' + pilotMeta.period.to;
+  }
+  function isPilot() { var r = document.getElementById('src-pilot'); return !!(r && r.checked); }   // 선택한 자료가 기존 수집 자료인가
+
   function fillSource() {
     var els = document.querySelectorAll('.srcline');
-    var line = sources.map(sourceLine).join(' / ');
+    var line = isPilot() ? pilotMeta.sourceText : sources.map(sourceLine).join(' / ');
     for (var i = 0; i < els.length; i++) els[i].textContent = line;
   }
 
@@ -218,7 +241,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 
   // R-03b: 조건에 맞는 공고가 없을 때. 이유와 다음에 할 일을 알려 주고, 같은 조건의 링크는 주소창에 남긴다.
   function renderEmpty(state, exs) {
-    var e = emptyResultText(!$('past').checked, { hasExclude: exs.length > 0, groupCount: state.groups.length });
+    var e = emptyResultText(!$('past').checked, { hasExclude: exs.length > 0, groupCount: state.pilot ? 5 : state.groups.length });
     $('summary').textContent = e.title;
     $('synnote').textContent = e.body;
     var el = $('emptylinks');
@@ -230,7 +253,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     el.hidden = false;
     $('list').textContent = '';
     $('share').hidden = true;
-    setAddress(shareQuery(state));
+    setAddress(state.pilot ? '' : shareQuery(state));
     $('res').hidden = false;
   }
 
@@ -244,8 +267,9 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
       var li = document.createElement('li'); li.className = 'item';
       var d = document.createElement('div');
       d.className = 'dday' + (isNaN(it.days) ? ' unk' : it.days < 0 ? ' past' : '');
-      d.textContent = formatRemaining(it.days);
-      d.setAttribute('aria-label', '개찰까지 ' + formatRemaining(it.days));
+      var lb = r.pilot ? '마감' : '개찰';   // 기존 수집 자료는 「마감」, 공개 자료는 「개찰」
+      d.textContent = formatRemaining(it.days, lb);
+      d.setAttribute('aria-label', lb + '까지 ' + formatRemaining(it.days, lb));
       var b = document.createElement('div');
       var t = document.createElement('div'); t.className = 't';
       var no = document.createElement('span'); no.className = 'no'; no.textContent = (idx + 1) + '.';   // 마감·개찰 임박순 번호
@@ -256,8 +280,15 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
       lab.appendChild(pk); lab.appendChild(no); lab.appendChild(document.createTextNode(r.title));
       t.appendChild(lab);
       var m = document.createElement('div'); m.className = 'm';
-      m.textContent = [r.status === '취소' ? '【취소된 공고】' : '', r.org, r.type, '공고게시일 ' + r.posted, scheduleText(r), formatPrice(r)].filter(Boolean).join(' · ');
+      m.textContent = [r.status === '취소' ? '【취소된 공고】' : '', r.org, r.type, (r.pilot ? '등록일 ' : '공고게시일 ') + r.posted, scheduleText(r), formatPrice(r)].filter(Boolean).join(' · ');
+      if (r.pilot && r.statusText) {   // 기존 수집 자료: 상태 칩(공고·수정·재공고·결과)
+        var chip = document.createElement('span'); chip.className = 'stchip'; chip.textContent = r.statusText; m.insertBefore(chip, m.firstChild);
+      }
       b.appendChild(t); b.appendChild(m);
+      if (r.pilot) {   // 이력 줄과 담당자·연락처 줄
+        if (r.historyText) { var hi = document.createElement('div'); hi.className = 'm2'; hi.textContent = '이력: ' + r.historyText; b.appendChild(hi); }
+        var ct = document.createElement('div'); ct.className = 'm2'; ct.textContent = contactText(r); b.appendChild(ct);
+      }
       if (r.url) {
         var a = document.createElement('a'); a.className = 'lk'; a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
         a.textContent = '공고 원문 보기 (새 창)'; m.appendChild(document.createElement('br')); m.appendChild(a);
@@ -267,14 +298,15 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     });
     // 공유: 검색조건을 담은 링크 + 고른 공고의 메일 본문(R-04). 새 검색이면 선택은 모두 해제된다.
     var link = pageUrl() + (shareQuery(state) ? '?' + shareQuery(state) : '');
-    curItems = items; curCtx = { base: base, state: state, link: link };
+    curItems = items; curCtx = { base: base, state: state, link: link, pilot: !!state.pilot };
+    if (state.pilot) $('synnote').textContent = '기존 수집 자료입니다. 담당자는 게시글 작성자(게시자)라 실제 계약 담당자와 다를 수 있습니다. 이 화면은 이 PC에서만 보입니다.';
     refreshPick();
     $('sharemsg').textContent = '';
     $('emptylinks').hidden = true;
     $('share').hidden = false;
-    $('filenote').hidden = location.protocol !== 'file:';
+    $('filenote').hidden = location.protocol !== 'file:' || !!state.pilot;
     shareLink = link;
-    setAddress(shareQuery(state));
+    setAddress(state.pilot ? '' : shareQuery(state));   // 비공개 자료는 주소(링크)로 공유하지 않는다
     $('res').hidden = false;
   }
 
@@ -292,7 +324,8 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   }
   function mailBody() {
     var sel = selectedItems();
-    return { sel: sel, res: buildMailBody({ base: curCtx.base, items: sel, sources: sourcesOf(sel), conditionLine: conditionText(curCtx.state), link: curCtx.link }) };
+    // 기존 수집 자료(비공개)는 이 PC에서만 열리므로 「다시 보기 링크」는 넣지 않고, 출처는 스냅숏 문구를 쓴다
+    return { sel: sel, res: buildMailBody({ base: curCtx.base, items: sel, sources: curCtx.pilot ? [pilotMeta.sourceText] : sourcesOf(sel), conditionLine: conditionText(curCtx.state), link: curCtx.pilot ? '' : curCtx.link }) };
   }
   function refreshPick() {
     var m = mailBody();
@@ -372,7 +405,8 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
 
   function search() {
     hideError();
-    var gv = validateGroups(selectedGroups());
+    var pilot = isPilot();   // R-05: 기존 수집 자료는 기관 구분 없이 모두 찾는다
+    var gv = pilot ? { ok: true } : validateGroups(selectedGroups());
     showGroupError(gv.ok ? '' : gv.message);
     // R-02: 조건이 모두 비었으면 안내만 보여 주고 이전 결과도 지운다
     var v = validateConditions({ keywords: $('kw').value, exclude: $('ex').value, min: $('mn').value, max: $('mx').value, baseDate: $('bd').value });
@@ -385,14 +419,23 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
     var mn = parseAmount($('mn').value), mx = parseAmount($('mx').value);
     var base = $('bd').value.trim();
     // (금액·기준일 형식은 위 validateConditions(R-03a)가 이미 걸러 냈다)
-    var found = filterBids(data.rows, { keywords: kws, exclude: exs, min: mn.value, max: mx.value, excludeClosed: !$('past').checked, baseDate: base, groups: selectedGroups() });
-    var state = { kw: $('kw').value, ex: $('ex').value, mn: $('mn').value, mx: $('mx').value, bd: $('bd').value, past: $('past').checked, groups: selectedGroups() };
+    var found = filterBids(pilot ? pilotRows : data.rows, { keywords: kws, exclude: exs, min: mn.value, max: mx.value, excludeClosed: !$('past').checked, baseDate: base, groups: pilot ? undefined : selectedGroups() });
+    var state = { kw: $('kw').value, ex: $('ex').value, mn: $('mn').value, mx: $('mx').value, bd: $('bd').value, past: $('past').checked, groups: selectedGroups(), pilot: pilot };
+    fillSource();
     if (!found.length) { renderEmpty(state, exs); return; }   // R-03b: 0건이면 이유와 다음 행동을 안내한다
     render(sortBids(found, base), base, tokens.indexOf('교육') !== -1, exs, state);
   }
 
   $('f').addEventListener('submit', function (e) { e.preventDefault(); search(); });
   $('past').addEventListener('change', function () { if (searched) search(); });
+  var srcRadios = document.querySelectorAll('input[name=src]');
+  for (var si = 0; si < srcRadios.length; si++) {
+    srcRadios[si].addEventListener('change', function () {   // R-05: 자료를 바꾸면 기관 선택은 잠그고(기존 수집 자료는 기관 구분 없음) 바로 다시 찾는다
+      $('groups').disabled = isPilot(); showGroupError('');
+      fillSource();
+      if (searched) search();
+    });
+  }
   for (var gi = 1; gi <= 5; gi++) {
     $('g' + gi).addEventListener('change', function () {
       var gv = validateGroups(selectedGroups());
@@ -403,6 +446,7 @@ footer{padding:8px 0 40px;font-size:13px;color:var(--muted)}
   $('clr').addEventListener('click', function () {
     $('kw').value = ''; $('ex').value = ''; $('mn').value = DEFAULT_MIN_TEXT; $('mx').value = ''; $('bd').value = todayText(); $('past').checked = false;
     setGroups(DEFAULT_GROUPS); showGroupError('');
+    document.getElementById('src-public').checked = true; $('groups').disabled = false; fillSource();   // 자료도 공개 자료로 돌린다
     hideError();
     clearResults();
     setAddress('');

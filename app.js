@@ -1,6 +1,6 @@
 // 부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기 — 계산·검사는 이 파일의 함수만 한다.
 // 데이터는 data.js의 window.BUSAN_BIDS를 읽는다. 화면 연결(DOM)은 app.html에 있다.
-// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택) · 제외 키워드(수강생 요청 2026-09-19). R-03(형식 오류·자료 불러오기 실패)은 이제 있다. R-04 메일 본문(고른 공고만 복사·메일 작성 창)도 있다. R-05 자료 선택(내 PC 전용)은 아직 없다.
+// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택) · 제외 키워드(수강생 요청 2026-09-19). R-03(형식 오류·자료 불러오기 실패)은 이제 있다. R-04 메일 본문(고른 공고만 복사·메일 작성 창)도 있다. R-05 자료 선택(내 PC 전용)도 있다.
 
 // 「교육」은 공고명에 거의 안 나오므로 함께 찾을 동의어 (requirements.md R-01)
 const SYNONYMS_EDU = ['교육', '강사', '연수', '수련', '어린이', '놀이', '어린이집', '유치원', '학교'];
@@ -43,11 +43,13 @@ function daysUntil(openDate, baseDate) {
   return Math.round((toUtc(openDate) - toUtc(baseDate)) / 86400000);
 }
 
-function formatRemaining(days) {
-  if (isNaN(days)) return '개찰일 확인 필요';   // 게시판 표기에서 날짜를 못 읽은 공고
+// label: 공개 자료는 「개찰」(기본), 기존 수집 자료(R-05)는 「마감」. 마감일을 모르면 공개 자료는 「개찰일 확인 필요」, 기존 수집 자료는 「-」(마감일 미상은 일정 칸에 따로 표시).
+function formatRemaining(days, label) {
+  const lb = label || '개찰';
+  if (isNaN(days)) return lb === '마감' ? '-' : '개찰일 확인 필요';   // 게시판 표기에서 날짜를 못 읽은 공고
   if (days > 0) return 'D-' + days;
   if (days === 0) return 'D-day';
-  return `개찰 지남(${-days}일 전)`;
+  return `${lb} 지남(${-days}일 전)`;
 }
 
 function formatWon(n) {
@@ -56,6 +58,7 @@ function formatWon(n) {
 
 // 원본 금액 표기가 깨진 행은 확인 필요를 붙인다
 function formatPrice(row) {
+  if (row.pilot || 'amount' in row) return formatPilotPrice(row);   // 기존 수집 자료(R-05): 「기초금액 116,825,440원」·「금액 미상」
   if (row.price == null) return '금액 미기재';   // 교육청 게시판 목록에는 금액이 없다
   return formatWon(row.price) + (row.priceNote ? ' (원본 표기 확인 필요)' : '');
 }
@@ -238,6 +241,7 @@ function parseShareQuery(search) {
 
 // 공고의 일정 표기(화면과 메일 본문이 같은 문구를 쓴다)
 function scheduleText(r) {
+  if (r.pilot) return r.open ? '마감일 ' + r.open : '마감일 미상';   // 기존 수집 자료(R-05)
   return r.openText ? '입찰일시 ' + r.openText : r.open ? '개찰예정일 ' + r.open : '일정은 원문에서 확인';
 }
 
@@ -249,7 +253,7 @@ function conditionText(s) {
   if (exs.length) parts.push('제외 ' + exs.join(', '));
   const mn = String(s.mn ?? '').trim(), mx = String(s.mx ?? '').trim();
   parts.push('금액 ' + (mn ? mn + '원 이상' : '최소 제한 없음') + (mx ? ' · ' + mx + '원 이하' : ''));
-  parts.push('대상 기관 ' + (s.groups || []).map(g => g + '.' + GROUP_SHORT[g]).join(' / '));
+  parts.push(s.pilot ? '자료 기존 수집 자료(비공개)' : '대상 기관 ' + (s.groups || []).map(g => g + '.' + GROUP_SHORT[g]).join(' / '));
   parts.push(s.past ? '지난 공고 포함' : '지난 공고 제외');
   return parts.join(' · ');
 }
@@ -272,6 +276,7 @@ function mailSubject(base, count) {
 function buildMailBody(info) {
   const items = info.items || [];
   if (!items.length) return { ok: false, message: MSG_PICK_NONE };
+  if (items[0].row.pilot) return buildPilotMailBody(info);   // 기존 수집 자료(R-05)는 자기 형식을 쓴다
   const lines = [`[입찰 공고 공유] 기준일 ${info.base} · ${items.length}건`];
   if (info.conditionLine) lines.push('검색조건: ' + info.conditionLine);
   if (info.link) lines.push('같은 조건으로 다시 보기: ' + info.link);
@@ -296,4 +301,59 @@ function buildMailBody(info) {
 function buildMailto(subject, body) {
   const url = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(String(body).replace(/\n/g, '\r\n'));
   return url.length > MAILTO_MAX_LENGTH ? { ok: false, message: MSG_MAIL_TOO_LONG } : { ok: true, url };
+}
+
+// ── R-05 기존 수집 자료(내 PC 전용) ──
+// data_pilot.js(window.BUSAN_PILOT)가 있는 내 PC에서만 「자료」 선택이 보인다. 공개 배포·저장소에는 이 파일이 없다(담당자·연락처 등 개인정보가 들어 있음).
+const PILOT_REPLY_NOTE = '참여 여부를 회신해 주세요. 금액·마감일은 자동 추출값이라 공고 원문에서 확인해 주세요.';
+
+// 고를 수 있는 자료 목록: data_pilot.js가 없거나 비었으면 공개 자료뿐(선택 항목을 숨김)
+function availableSources(pilot) {
+  return pilot && Array.isArray(pilot.rows) && pilot.rows.length ? ['public', 'pilot'] : ['public'];
+}
+
+// 「기초금액 116,825,440원」 · 금액이 없으면 「금액 미상」
+function formatPilotPrice(o) {
+  const a = o.amount ?? o.price ?? null;
+  return a == null ? '금액 미상' : `${o.amountLabel || o.priceLabel || '금액'} ${formatWon(a)}`;
+}
+
+// 「담당자 A · 연락처 P」 · 값이 없으면 각각 「없음」. author는 게시글 작성자라 계약 담당자와 다를 수 있다.
+function contactText(o) {
+  return `담당자 ${o.author || '없음'} · 연락처 ${o.phone || '없음'}`;
+}
+
+// 이전 프로젝트 수집 항목 → 화면·검색용 행. 검색·정렬이 쓰는 공통 필드(open=마감일, price, cat, title…)와 화면용 필드를 함께 돌려준다.
+function normalizeRow(kind, raw) {
+  if (kind !== 'pilot') throw new Error('알 수 없는 자료: ' + kind);
+  const due = /^\d{4}-\d{2}-\d{2}$/.test(raw.deadline || '') ? raw.deadline : null;
+  const historyText = (raw.history || []).map(h => `${h.status} ${h.date}`).join(' → ');
+  return {
+    dueLabel: '마감일', due, priceText: formatPilotPrice(raw), statusText: raw.status || '', historyText,
+    pilot: true, no: '', org: raw.org, cat: pilotGroup(raw.category, raw.subCategory), type: raw.subCategory || raw.category || '',
+    status: raw.status === '취소' ? '취소' : '', posted: raw.regDate, title: raw.title, award: '', open: due, openText: '',
+    price: raw.amount ?? null, priceNote: '', priceLabel: raw.amountLabel || '', url: raw.url || '', author: raw.author || '', phone: raw.phone || '',
+  };
+}
+
+// 기존 수집 자료용 메일 본문(명세의 「기존 수집 자료의 표시·메일 본문」 형식)
+function buildPilotMailBody(info) {
+  const items = info.items;
+  const lines = [`[입찰 공고 공유] 기준일 ${info.base} · ${items.length}건 (기존 수집 자료)`];
+  if (info.conditionLine) lines.push('검색조건: ' + info.conditionLine);
+  lines.push('');
+  items.forEach((it, i) => {
+    const r = it.row;
+    lines.push(`${i + 1}. ${r.title}`);
+    lines.push(`- ${r.org} · ${r.statusText}${r.historyText ? ` (이력: ${r.historyText})` : ''}`);
+    lines.push(`- 등록일 ${r.posted} · ${r.open ? '마감일 ' + r.open : '마감일 미상'}${isNaN(it.days) ? '' : ` (${formatRemaining(it.days, '마감')})`}`);
+    lines.push('- ' + formatPilotPrice(r));
+    lines.push('- 문의: ' + contactText(r));
+    if (r.url) lines.push('- 원문: ' + r.url);
+    lines.push('');
+  });
+  const src = (info.sources || []).filter(Boolean);
+  if (src.length) lines.push('출처: ' + src.join(' / '));
+  lines.push(PILOT_REPLY_NOTE);
+  return { ok: true, text: lines.join('\n') };
 }
