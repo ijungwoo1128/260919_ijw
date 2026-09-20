@@ -1,6 +1,6 @@
 // 부산지역 교육 및 학교(어린이 시설 등) 관련 입찰공고 찾기 — 계산·검사는 이 파일의 함수만 한다.
 // 데이터는 data.js의 window.BUSAN_BIDS를 읽는다. 화면 연결(DOM)은 app.html에 있다.
-// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택) · 제외 키워드(수강생 요청 2026-09-19). R-03(형식 오류·자료 불러오기 실패)은 이제 있다. R-04 메일 본문(고르기)·R-05 자료 선택은 아직 없다.
+// 구현 범위: R-01(정상) · R-02(빈값) · R-06(검색 대상 기관 선택) · 제외 키워드(수강생 요청 2026-09-19). R-03(형식 오류·자료 불러오기 실패)은 이제 있다. R-04 메일 본문(고른 공고만 복사·메일 작성 창)도 있다. R-05 자료 선택(내 PC 전용)은 아직 없다.
 
 // 「교육」은 공고명에 거의 안 나오므로 함께 찾을 동의어 (requirements.md R-01)
 const SYNONYMS_EDU = ['교육', '강사', '연수', '수련', '어린이', '놀이', '어린이집', '유치원', '학교'];
@@ -202,7 +202,6 @@ function summaryLine(count, baseDate, exclude) {
 // ── 결과 공유 (수강생 요청 2026-09-19) ──
 // 검색조건을 주소(링크)에 담는다. 링크를 열면 같은 조건으로 자동 검색하고, 결과는 마감·개찰이 임박한 것부터 번호를 붙여 보여 준다.
 // 기준일은 링크를 여는 날(오늘)이 기본이라, 보낸 날과 여는 날이 다르면 D-day가 여는 날 기준으로 다시 계산된다(기준일을 직접 바꿨을 때만 링크에 담는다).
-const SHARE_MAX_ITEMS = 30;       // 메일 본문에 넣는 공고 수 상한(넘으면 나머지는 링크에서 보라고 안내)
 const SHARE_MAX_TEXT = 200;       // 링크에 담는 키워드 글자 수 상한
 const GROUP_SHORT = { 1: '시청·구군·지방공기업', 2: '교육청·학교', 3: '부산지역 대학', 4: '국가기관', 5: '기타 기관' };
 
@@ -255,23 +254,46 @@ function conditionText(s) {
   return parts.join(' · ');
 }
 
-// 메일 본문: 조건·기준일·링크 + 마감 임박순 번호 목록. items는 sortBids 결과([{row, days}])를 그대로 받는다.
-function buildShareText(info) {
+// ── R-04 메일 본문 (고른 공고만) ──
+const MSG_PICK_NONE = '메일 본문에 넣을 공고를 하나 이상 선택해 주세요.';
+const MSG_COPY_OK = '메일 본문을 복사했습니다. 메일에 붙여넣기(Ctrl+V) 하세요.';
+const MSG_COPY_FAIL = '자동 복사가 안 됩니다. 아래 본문을 직접 선택해 복사해 주세요.';
+const MSG_MAIL_TOO_LONG = '본문이 길어 메일 작성 창을 열 수 없습니다. 「메일 본문 복사」를 사용해 주세요.';
+// 메일 작성 창(mailto:) 주소의 길이 상한. 메일 프로그램마다 한계가 달라 「설계값」이며 실제 메일 프로그램으로는 확인하지 못했다.
+const MAILTO_MAX_LENGTH = 4000;
+const REPLY_NOTE = '참여 여부를 회신해 주세요. 개찰예정일은 접수 마감과 다를 수 있으니 공고 원문에서 확인해 주세요.';
+
+function mailSubject(base, count) {
+  return `[입찰 공고 공유] ${base} 기준 ${count}건`;
+}
+
+// 고른 공고 → 메일 본문. info = { base, items(sortBids 결과 중 고른 것, 화면 순서 그대로), sources(출처 문구 목록), conditionLine?, link? }
+// 조건 줄과 링크는 있을 때만 넣는다. 번호는 고른 순서(=마감·개찰 임박순)대로 1, 2, 3…이다. 하나도 안 골랐으면 { ok:false, message }.
+function buildMailBody(info) {
   const items = info.items || [];
-  const shown = items.slice(0, SHARE_MAX_ITEMS);
-  const lines = [
-    `[부산 입찰공고 검색 결과] ${info.base} 기준 · ${items.length}건 (마감·개찰 임박순)`,
-    '검색조건: ' + conditionText(info),
-  ];
+  if (!items.length) return { ok: false, message: MSG_PICK_NONE };
+  const lines = [`[입찰 공고 공유] 기준일 ${info.base} · ${items.length}건`];
+  if (info.conditionLine) lines.push('검색조건: ' + info.conditionLine);
   if (info.link) lines.push('같은 조건으로 다시 보기: ' + info.link);
   lines.push('');
-  shown.forEach((it, i) => {
+  items.forEach((it, i) => {
     const r = it.row;
-    lines.push(`${i + 1}. [${formatRemaining(it.days)}] ${r.status === '취소' ? '【취소된 공고】 ' : ''}${r.title}`);
-    lines.push('   ' + [r.org, r.type, scheduleText(r), formatPrice(r)].filter(Boolean).join(' · '));
-    if (r.url) lines.push('   원문: ' + r.url);
+    lines.push(`${i + 1}. ${r.status === '취소' ? '【취소된 공고】 ' : ''}${r.title}`);
+    lines.push('- ' + [r.org, r.no ? '공고번호 ' + r.no : '', r.type].filter(Boolean).join(' · '));
+    const remaining = isNaN(it.days) ? '' : ` (${formatRemaining(it.days)})`;
+    lines.push(`- 공고게시일 ${r.posted} · ${scheduleText(r)}${remaining}`);
+    lines.push('- ' + [r.award ? '낙찰방법 ' + r.award : '', r.price != null ? '추정가격 ' + formatPrice(r) : formatPrice(r)].filter(Boolean).join(' · '));
+    if (r.url) lines.push('- 원문: ' + r.url);
+    lines.push('');
   });
-  if (items.length > shown.length) lines.push('', `… 외 ${items.length - shown.length}건은 위 링크에서 확인하세요.`);
-  lines.push('', '※ 일정·금액은 공고 원문에서 반드시 다시 확인하세요.');
-  return lines.join('\n');
+  const src = (info.sources || []).filter(Boolean);
+  if (src.length) lines.push('출처: ' + src.join(' / '));
+  lines.push(REPLY_NOTE);
+  return { ok: true, text: lines.join('\n') };
+}
+
+// 메일 작성 창 주소. 받는 사람은 비워 둔다(앱은 수신자 주소를 받지도 저장하지도 않는다). 너무 길면 { ok:false, message }.
+function buildMailto(subject, body) {
+  const url = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(String(body).replace(/\n/g, '\r\n'));
+  return url.length > MAILTO_MAX_LENGTH ? { ok: false, message: MSG_MAIL_TOO_LONG } : { ok: true, url };
 }
