@@ -4,12 +4,12 @@ window.PEN_BIDS = {
  "url": "https://www.pen.go.kr/main/na/ntt/selectNttList.do?mi=30514&bbsId=2407",
  "license": "공개 게시판의 제목·기관명·입찰일시만 담음(본문·첨부 제외). 내용은 반드시 원문에서 확인",
  "period": {
-  "from": "2026-06-22",
+  "from": "2026-06-23",
   "to": "2026-09-18"
  },
  "updateNote": "수집할 때마다 갱신",
- "fetched": "2026-09-20",
- "excludedResults": 43,
+ "fetched": "2026-09-21",
+ "excludedResults": 41,
  "rows": [
   {
    "no": 8528,
@@ -1735,36 +1735,6 @@ window.PEN_BIDS = {
    "price": null,
    "priceNote": "",
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1173764"
-  },
-  {
-   "no": 8372,
-   "org": "성일여자고등학교",
-   "cat": 2,
-   "type": "학교입찰",
-   "status": "",
-   "posted": "2026-06-22",
-   "title": "2026년 7월 성일여자고등학교 급식 식자재 소액수의 입찰공고",
-   "award": "",
-   "open": "2026-06-25",
-   "openText": "2026-06-22 14시00분 ~ 2026-06-25 14시00분",
-   "price": null,
-   "priceNote": "",
-   "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1173680"
-  },
-  {
-   "no": 8369,
-   "org": "성모여자고등학교",
-   "cat": 2,
-   "type": "학교입찰",
-   "status": "",
-   "posted": "2026-06-22",
-   "title": "2026학년도 7월 성모여자고등학교 급식물품 전자입찰(소액수의) 공고",
-   "award": "",
-   "open": "2026-06-26",
-   "openText": "2026-06-22 ~ 2026-06-26",
-   "price": null,
-   "priceNote": "",
-   "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1173613"
   }
  ]
 };
