@@ -1,0 +1,60 @@
+# 배포된 사이트를 진짜 브라우저(Chrome)로 열어 「사람이 눌러 보는 확인」을 자동으로 한다(tools/e2e_deployed.js).
+# 언제: ① Vercel이 Production 배포에 성공할 때마다 ② 월·목 아침 자동 갱신(07:00 KST)이 끝난 뒤 07:40 KST ③ 수동 실행
+# 무엇을: 화면 열림·자료 파일·비공개 파일이 404인지·개인정보 없음·자료 최신·화면 테스트 통과·검색 링크·제외 키워드·0건 안내·형식 오류 3가지·메일 본문·실제 클립보드·메일 창 주소·JS 오류·배포본=저장소 파일
+# 실패하면 이 실행이 빨간 X로 표시되고 GitHub이 알림 메일을 보낸다. 결과 JSON은 실행 화면의 Artifacts에서 받을 수 있다.
+name: 배포 자동 점검
+
+on:
+  deployment_status:
+  schedule:
+    - cron: '40 22 * * 0'   # 일요일 22:40 UTC = 월요일 07:40 KST
+    - cron: '40 22 * * 3'   # 수요일 22:40 UTC = 목요일 07:40 KST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-deploy
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    # 배포 이벤트는 「Production 성공」일 때만 돈다(미리보기·진행 중 상태는 건너뜀)
+    if: github.event_name != 'deployment_status' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}   # 배포된 그 커밋의 파일과 비교한다
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 배포된 사이트 자동 점검(Chrome)
+        run: node tools/e2e_deployed.js https://260919-ijw.vercel.app --json e2e-result.json
+
+      - name: 결과 저장
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-result
+          path: e2e-result.json
+          if-no-files-found: ignore
+
+      - name: 요약
+        if: always()
+        run: |
+          {
+            echo "## 배포 자동 점검"
+            echo ""
+            if [ -f e2e-result.json ]; then
+              node -e 'const r=require("./e2e-result.json");const p=r.results.filter(x=>x.ok).length;console.log("주소: "+r.base+" · "+r.browser+"\n\n결과: **"+p+"/"+r.results.length+" 통과**\n");console.log("|점검|결과|내용|\n|---|---|---|");r.results.forEach(x=>console.log("|"+x.id+" "+x.name.replace(/\|/g,"/")+"|"+(x.ok?"✅":"❌")+"|"+String(x.detail||"").replace(/\|/g,"/").slice(0,120)+"|"))'
+            else
+              echo "점검기가 결과 파일을 만들지 못했습니다(브라우저 시작 실패 등)."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

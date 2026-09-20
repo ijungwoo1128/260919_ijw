@@ -190,3 +190,17 @@
 - 출처: 이전 프로젝트 `busan-bid-pilot/output/_이전_통합본/data.json`(부산교육청 계열·대학 게시판, 2026-03-17~2026-09-13, 38건). `node tools/build_pilot.js` → `data_pilot.js`(내 PC 전용).
 - **개인정보**: 담당자(게시자, 25건)·연락처(5건)가 들어 있다. `.gitignore`로 제외되어 GitHub·Vercel에 올라가지 않고, 배포 주소에서는 요청도 하지 않는다. 스크랩한 제3자의 정보라 내 PC 화면에서만 본다.
 - 이 자료는 스냅숏(2026-09-13)이라 갱신되지 않는다. 최신 교육청·대학 공고는 공개 자료(자동 갱신)를 본다.
+
+### 작업 스케줄러 등록 — 수강생이 한 줄로 (2026-09-20)
+
+AI는 시스템 설정(작업 스케줄러 등록)을 대신 하지 않는다. 대신 `tools/register_task.ps1`을 만들었다. 이 PC에서 PowerShell을 열고 deploy 폴더에서:
+
+- 미리 보기(아무것도 안 바뀜): `powershell -ExecutionPolicy Bypass -File tools/register_task.ps1 -DryRun`
+- **등록**: `powershell -ExecutionPolicy Bypass -File tools/register_task.ps1` — 월·목 08:00에 `refresh_local.cmd` 실행(로그온한 사용자로, 관리자 권한 불필요, PC가 꺼져 있었으면 켠 뒤 가능한 한 빨리 실행). 결과는 `deploy/refresh_local.log`.
+- 바로 시험: `Start-ScheduledTask -TaskName 'Busan Bid Data Refresh (city-district-univ)'` → 10분쯤 뒤 로그 마지막 줄이 `===== end`인지 확인.
+- 해제: `powershell -ExecutionPolicy Bypass -File tools/register_task.ps1 -Unregister`
+
+## 배포 자동 점검 (2026-09-20)
+
+`tools/e2e_deployed.js`가 Chrome(화면 없이)을 원격 조종해 **배포 주소**에서 사람이 하던 확인을 자동으로 한다: 실제 마우스 클릭·글자 입력·실제 클립보드 읽기 포함, 총 19개 점검(E-01~E-19). 로컬에서는 `node tools/e2e_deployed.js`, GitHub에서는 `verify-deploy.yml`이 **Vercel 배포가 성공할 때마다**·월·목 07:40에 자동으로 돌리고 결과 JSON을 보관한다. 실패하면 Actions에 빨간 X와 알림 메일이 온다.
+- 자동화하지 못하는 것: **실제 메일 프로그램이 열리는지·본문이 잘리지 않는지**(메일 프로그램 의존, 주소 형식과 길이 상한만 점검), **사람이 화면을 보고 느끼는 판단**(글자 크기·색·문구의 자연스러움), 월·목 정해진 시각에 자동 실행이 도는지(다음 실행 뒤 Actions 기록으로 확인).
