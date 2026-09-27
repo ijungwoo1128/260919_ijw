@@ -4,26 +4,26 @@ window.OFC_BIDS = {
  "url": "https://home.pen.go.kr/nambu/main.do",
  "license": "공개 게시판의 제목·기관·입찰일시·등록일·원문 링크만 담음(급식 식재료·결과 안내 제외). 내용은 반드시 원문에서 확인",
  "period": {
-  "from": "2026-08-26",
+  "from": "2026-08-31",
   "to": "2026-09-23"
  },
  "updateNote": "수집할 때마다 갱신",
- "fetched": "2026-09-24",
+ "fetched": "2026-09-28",
  "per": {
   "서부·학교입찰정보": {
-   "scanned": 13,
-   "kept": 4,
-   "pages": 3
+   "scanned": 9,
+   "kept": 3,
+   "pages": 2
   },
   "남부·교육청입찰": {
-   "scanned": 11,
-   "kept": 11,
-   "pages": 3
+   "scanned": 9,
+   "kept": 9,
+   "pages": 2
   },
   "남부·학교입찰": {
-   "scanned": 40,
-   "kept": 2,
-   "pages": 5
+   "scanned": 29,
+   "kept": 0,
+   "pages": 4
   },
   "북부·북부교육지원청입찰공고": {
    "scanned": 3,
@@ -31,14 +31,14 @@ window.OFC_BIDS = {
    "pages": 2
   },
   "북부·학교입찰공고": {
-   "scanned": 43,
+   "scanned": 34,
    "kept": 2,
-   "pages": 6
+   "pages": 5
   },
   "동래·학교 입찰공고": {
-   "scanned": 28,
-   "kept": 4,
-   "pages": 4
+   "scanned": 19,
+   "kept": 3,
+   "pages": 3
   },
   "해운대·교육지원청 입찰공고": {
    "scanned": 0,
@@ -46,7 +46,7 @@ window.OFC_BIDS = {
    "pages": 1
   },
   "해운대·학교 입찰공고": {
-   "scanned": 40,
+   "scanned": 34,
    "kept": 4,
    "pages": 5
   }
@@ -58,7 +58,7 @@ window.OFC_BIDS = {
  "failed": {},
  "rows": [
   {
-   "no": "1101",
+   "no": "1096",
    "org": "부산내성중학교",
    "cat": 2,
    "type": "동래교육지원청 학교입찰",
@@ -73,7 +73,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1039094"
   },
   {
-   "no": "3566",
+   "no": "3547",
    "org": "용암초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -88,7 +88,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/haeundae/na/ntt/selectNttInfo.do?mi=11328&bbsId=3536&nttSn=1038872"
   },
   {
-   "no": "466",
+   "no": "462",
    "org": "부산서부교육지원청",
    "cat": 2,
    "type": "서부교육지원청 학교입찰",
@@ -103,7 +103,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/seobu/na/ntt/selectNttInfo.do?mi=9487&bbsId=3989&nttSn=1038511"
   },
   {
-   "no": "1049",
+   "no": "1036",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -118,7 +118,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1038268"
   },
   {
-   "no": "1050",
+   "no": "1037",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -133,7 +133,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1038324"
   },
   {
-   "no": "3555",
+   "no": "3536",
    "org": "일광초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -148,7 +148,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/haeundae/na/ntt/selectNttInfo.do?mi=11328&bbsId=3536&nttSn=1038135"
   },
   {
-   "no": "1045",
+   "no": "1032",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -163,7 +163,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1037105"
   },
   {
-   "no": "1046",
+   "no": "1033",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -178,7 +178,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1037106"
   },
   {
-   "no": "1047",
+   "no": "1034",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -193,7 +193,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1037107"
   },
   {
-   "no": "1048",
+   "no": "1035",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -208,7 +208,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1037109"
   },
   {
-   "no": "463",
+   "no": "459",
    "org": "부산서부교육지원청",
    "cat": 2,
    "type": "서부교육지원청 학교입찰",
@@ -223,7 +223,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/seobu/na/ntt/selectNttInfo.do?mi=9487&bbsId=3989&nttSn=1036484"
   },
   {
-   "no": "4297",
+   "no": "4274",
    "org": "화명중학교",
    "cat": 2,
    "type": "북부교육지원청 학교입찰",
@@ -238,7 +238,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12815&bbsId=3722&nttSn=1015273"
   },
   {
-   "no": "1087",
+   "no": "1082",
    "org": "명륜초등학교",
    "cat": 2,
    "type": "동래교육지원청 학교입찰",
@@ -253,7 +253,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1015129"
   },
   {
-   "no": "3537",
+   "no": "3518",
    "org": "동수영중학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -268,7 +268,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/haeundae/na/ntt/selectNttInfo.do?mi=11328&bbsId=3536&nttSn=1014772"
   },
   {
-   "no": "3538",
+   "no": "3519",
    "org": "신정중학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -283,7 +283,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/haeundae/na/ntt/selectNttInfo.do?mi=11328&bbsId=3536&nttSn=1014822"
   },
   {
-   "no": "1085",
+   "no": "1080",
    "org": "동신중학교",
    "cat": 2,
    "type": "동래교육지원청 학교입찰",
@@ -298,7 +298,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1014593"
   },
   {
-   "no": "1043",
+   "no": "1030",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -313,7 +313,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1014391"
   },
   {
-   "no": "1044",
+   "no": "1031",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -328,7 +328,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1014393"
   },
   {
-   "no": "1042",
+   "no": "1029",
    "org": "부산남부교육지원청",
    "cat": 2,
    "type": "남부교육지원청 입찰공고",
@@ -343,7 +343,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1014308"
   },
   {
-   "no": "460",
+   "no": "456",
    "org": "부산서부교육지원청",
    "cat": 2,
    "type": "서부교육지원청 학교입찰",
@@ -358,7 +358,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/seobu/na/ntt/selectNttInfo.do?mi=9487&bbsId=3989&nttSn=1014187"
   },
   {
-   "no": "4292",
+   "no": "4269",
    "org": "신호중학교",
    "cat": 2,
    "type": "북부교육지원청 학교입찰",
@@ -373,7 +373,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12815&bbsId=3722&nttSn=1013955"
   },
   {
-   "no": "1440",
+   "no": "1427",
    "org": "부산북부교육지원청 학교지원과",
    "cat": 2,
    "type": "북부교육지원청 입찰공고",
@@ -388,7 +388,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12814&bbsId=3721&nttSn=1014049"
   },
   {
-   "no": "1441",
+   "no": "1428",
    "org": "부산북부교육지원청 학교지원과",
    "cat": 2,
    "type": "북부교육지원청 입찰공고",
@@ -403,7 +403,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12814&bbsId=3721&nttSn=1014050"
   },
   {
-   "no": "1442",
+   "no": "1429",
    "org": "부산북부교육지원청 학교지원과",
    "cat": 2,
    "type": "북부교육지원청 입찰공고",
@@ -416,96 +416,6 @@ window.OFC_BIDS = {
    "price": null,
    "priceNote": "",
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12814&bbsId=3721&nttSn=1014051"
-  },
-  {
-   "no": "458",
-   "org": "부산서부교육지원청",
-   "cat": 2,
-   "type": "서부교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-08-28",
-   "title": "해동중학교 2027학년도 생활복(동복,하복) 학교주관구매 (재)입찰공고",
-   "award": "",
-   "open": "2026-09-18",
-   "openText": "2026/09/18 10:00",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/seobu/na/ntt/selectNttInfo.do?mi=9487&bbsId=3989&nttSn=1013791"
-  },
-  {
-   "no": "1077",
-   "org": "부곡여자중학교",
-   "cat": 2,
-   "type": "동래교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-08-27",
-   "title": "2028학년도 부곡여자중학교 신입생 교복(동복) 디자인 변경 예정 공고",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1013621"
-  },
-  {
-   "no": "1040",
-   "org": "부산남부교육지원청",
-   "cat": 2,
-   "type": "남부교육지원청 입찰공고",
-   "status": "",
-   "posted": "2026-08-27",
-   "title": "부산진여자상업고등학교 급식실현대화공사",
-   "award": "",
-   "open": "2026-09-02",
-   "openText": "2026/09/02 11:00",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1013613"
-  },
-  {
-   "no": "1041",
-   "org": "부산남부교육지원청",
-   "cat": 2,
-   "type": "남부교육지원청 입찰공고",
-   "status": "",
-   "posted": "2026-08-27",
-   "title": "부산진여자상업고등학교 급식실현대화공사 감리용역",
-   "award": "",
-   "open": "2026-09-03",
-   "openText": "2026/09/03 11:00",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1013615"
-  },
-  {
-   "no": "1131",
-   "org": "부산남부교육지원청",
-   "cat": 2,
-   "type": "남부교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-08-26",
-   "title": "2027학년도 동양중학교 신입생교복(동복,하복)학교주관구매 입찰 공고",
-   "award": "",
-   "open": "2026-08-03",
-   "openText": "2026/08/03 10:00",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11866&bbsId=3991&nttSn=1013505"
-  },
-  {
-   "no": "1134",
-   "org": "부산남부교육지원청",
-   "cat": 2,
-   "type": "남부교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-08-26",
-   "title": "2027학년도 문현여자중학교 신입생 교복(동복, 하복) 학교주관구매 입찰 공고",
-   "award": "",
-   "open": "2026-08-06",
-   "openText": "2026/08/06 14:00",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11866&bbsId=3991&nttSn=1013549"
   }
  ]
 };
