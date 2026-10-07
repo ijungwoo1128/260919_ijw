@@ -4,21 +4,21 @@ window.OFC_BIDS = {
  "url": "https://home.pen.go.kr/nambu/main.do",
  "license": "공개 게시판의 제목·기관·입찰일시·등록일·원문 링크만 담음(급식 식재료·결과 안내 제외). 내용은 반드시 원문에서 확인",
  "period": {
-  "from": "2026-09-07",
-  "to": "2026-10-01"
+  "from": "2026-09-08",
+  "to": "2026-10-07"
  },
  "updateNote": "수집할 때마다 갱신",
- "fetched": "2026-10-05",
+ "fetched": "2026-10-08",
  "per": {
   "서부·학교입찰정보": {
-   "scanned": 9,
+   "scanned": 8,
    "kept": 2,
    "pages": 2
   },
   "남부·교육청입찰": {
-   "scanned": 21,
-   "kept": 21,
-   "pages": 4
+   "scanned": 37,
+   "kept": 37,
+   "pages": 5
   },
   "남부·학교입찰": {
    "scanned": 32,
@@ -36,8 +36,8 @@ window.OFC_BIDS = {
    "pages": 5
   },
   "동래·학교 입찰공고": {
-   "scanned": 17,
-   "kept": 2,
+   "scanned": 16,
+   "kept": 1,
    "pages": 3
   },
   "해운대·교육지원청 입찰공고": {
@@ -46,7 +46,7 @@ window.OFC_BIDS = {
    "pages": 1
   },
   "해운대·학교 입찰공고": {
-   "scanned": 36,
+   "scanned": 35,
    "kept": 4,
    "pages": 5
   }
@@ -57,6 +57,246 @@ window.OFC_BIDS = {
  },
  "failed": {},
  "rows": [
+  {
+   "no": "1051",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "수성초등학교 화장실개량 및 기타공사(계속비)",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041291"
+  },
+  {
+   "no": "1052",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "수성초등학교 화장실개량 및 기타공사 감리용역(계속비)",
+   "award": "",
+   "open": "2026-10-15",
+   "openText": "2026/10/15 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041292"
+  },
+  {
+   "no": "1053",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "용산초등학교 내진보강공사 설계용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041293"
+  },
+  {
+   "no": "1054",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "성동중학교 내진보강공사 설계용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 14:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041294"
+  },
+  {
+   "no": "1055",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "가야여자중학교 등 2교(경남여중) 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041295"
+  },
+  {
+   "no": "1056",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "개림중학교 등 2교(부산진초) 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041296"
+  },
+  {
+   "no": "1057",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "개림초등학교 등 2교(부산진고) 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041297"
+  },
+  {
+   "no": "1058",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "개원초등학교 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041298"
+  },
+  {
+   "no": "1059",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "동양중학교 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041299"
+  },
+  {
+   "no": "1060",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "동양초등학교 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041300"
+  },
+  {
+   "no": "1061",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "동원초등학교 등 2교(부산개성중) 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041301"
+  },
+  {
+   "no": "1062",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "부산고등학교 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041302"
+  },
+  {
+   "no": "1063",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "분포고등학교 등 2교(용당초) 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041303"
+  },
+  {
+   "no": "1064",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "분포초등학교 외 1교(분포중) 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041304"
+  },
+  {
+   "no": "1065",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "용문초등학교 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041305"
+  },
+  {
+   "no": "1066",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-07",
+   "title": "용호중학교 등 2교(용문중) 내진성능평가용역",
+   "award": "",
+   "open": "2026-10-14",
+   "openText": "2026/10/14 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041306"
+  },
   {
    "no": "1050",
    "org": "부산남부교육지원청",
@@ -73,7 +313,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1040586"
   },
   {
-   "no": "3541",
+   "no": "3536",
    "org": "기장중학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -268,7 +508,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1039772"
   },
   {
-   "no": "3539",
+   "no": "3534",
    "org": "센텀초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -328,7 +568,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1039094"
   },
   {
-   "no": "3535",
+   "no": "3530",
    "org": "용암초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -388,7 +628,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1038324"
   },
   {
-   "no": "3524",
+   "no": "3519",
    "org": "일광초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -478,7 +718,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/seobu/na/ntt/selectNttInfo.do?mi=9487&bbsId=3989&nttSn=1036484"
   },
   {
-   "no": "4264",
+   "no": "4259",
    "org": "화명중학교",
    "cat": 2,
    "type": "북부교육지원청 학교입찰",
@@ -491,21 +731,6 @@ window.OFC_BIDS = {
    "price": null,
    "priceNote": "",
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12815&bbsId=3722&nttSn=1015273"
-  },
-  {
-   "no": "1078",
-   "org": "명륜초등학교",
-   "cat": 2,
-   "type": "동래교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-09-07",
-   "title": "명륜초등학교 2026학년도 2학기 현장체험학습 차량 임차 소액수의 견적제출",
-   "award": "",
-   "open": null,
-   "openText": "",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1015129"
   }
  ]
 };
