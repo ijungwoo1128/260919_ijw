@@ -4,24 +4,24 @@ window.OFC_BIDS = {
  "url": "https://home.pen.go.kr/nambu/main.do",
  "license": "공개 게시판의 제목·기관·입찰일시·등록일·원문 링크만 담음(급식 식재료·결과 안내 제외). 내용은 반드시 원문에서 확인",
  "period": {
-  "from": "2026-09-21",
-  "to": "2026-10-17"
+  "from": "2026-09-22",
+  "to": "2026-10-21"
  },
  "updateNote": "수집할 때마다 갱신",
- "fetched": "2026-10-19",
+ "fetched": "2026-10-22",
  "per": {
   "서부·학교입찰정보": {
-   "scanned": 6,
-   "kept": 2,
+   "scanned": 5,
+   "kept": 1,
    "pages": 2
   },
   "남부·교육청입찰": {
-   "scanned": 33,
-   "kept": 33,
+   "scanned": 36,
+   "kept": 36,
    "pages": 5
   },
   "남부·학교입찰": {
-   "scanned": 22,
+   "scanned": 26,
    "kept": 0,
    "pages": 4
   },
@@ -31,13 +31,13 @@ window.OFC_BIDS = {
    "pages": 1
   },
   "북부·학교입찰공고": {
-   "scanned": 20,
+   "scanned": 24,
    "kept": 3,
-   "pages": 3
+   "pages": 4
   },
   "동래·학교 입찰공고": {
-   "scanned": 12,
-   "kept": 2,
+   "scanned": 15,
+   "kept": 3,
    "pages": 3
   },
   "해운대·교육지원청 입찰공고": {
@@ -46,7 +46,7 @@ window.OFC_BIDS = {
    "pages": 1
   },
   "해운대·학교 입찰공고": {
-   "scanned": 25,
+   "scanned": 30,
    "kept": 5,
    "pages": 4
   }
@@ -57,6 +57,66 @@ window.OFC_BIDS = {
  },
  "failed": {},
  "rows": [
+  {
+   "no": "1057",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-21",
+   "title": "부산공업고등학교 냉난방개선 기계설비공사(계속비)",
+   "award": "",
+   "open": "2026-10-27",
+   "openText": "2026/10/27 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1043157"
+  },
+  {
+   "no": "1058",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-21",
+   "title": "수성초등학교 화장실개량 전기공사(계속비)",
+   "award": "",
+   "open": "2026-10-27",
+   "openText": "2026/10/27 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1043158"
+  },
+  {
+   "no": "1081",
+   "org": "명륜초등학교",
+   "cat": 2,
+   "type": "동래교육지원청 학교입찰",
+   "status": "",
+   "posted": "2026-10-20",
+   "title": "명륜초등학교 화변기 교체 공사 2인 이상 견적 제출 안내",
+   "award": "",
+   "open": null,
+   "openText": "",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1043023"
+  },
+  {
+   "no": "1056",
+   "org": "부산남부교육지원청",
+   "cat": 2,
+   "type": "남부교육지원청 입찰공고",
+   "status": "",
+   "posted": "2026-10-19",
+   "title": "부산중학교 공간재구조화 교사개축 정보통신, 소방공사 감리용역(계속비 총괄)",
+   "award": "",
+   "open": "2026-10-23",
+   "openText": "2026/10/23 11:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1042901"
+  },
   {
    "no": "1078",
    "org": "부산내성중학교",
@@ -73,7 +133,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1042774"
   },
   {
-   "no": "4248",
+   "no": "4212",
    "org": "신호중학교",
    "cat": 2,
    "type": "북부교육지원청 학교입찰",
@@ -88,7 +148,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12815&bbsId=3722&nttSn=1042640"
   },
   {
-   "no": "4249",
+   "no": "4213",
    "org": "명진중학교",
    "cat": 2,
    "type": "북부교육지원청 학교입찰",
@@ -103,7 +163,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/bukbu/na/ntt/selectNttInfo.do?mi=12815&bbsId=3722&nttSn=1042653"
   },
   {
-   "no": "466",
+   "no": "464",
    "org": "부산서부교육지원청",
    "cat": 2,
    "type": "서부교육지원청 학교입찰",
@@ -118,7 +178,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/seobu/na/ntt/selectNttInfo.do?mi=9487&bbsId=3989&nttSn=1042694"
   },
   {
-   "no": "3511",
+   "no": "3482",
    "org": "남천초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -133,7 +193,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/haeundae/na/ntt/selectNttInfo.do?mi=11328&bbsId=3536&nttSn=1042555"
   },
   {
-   "no": "4245",
+   "no": "4209",
    "org": "명호중학교",
    "cat": 2,
    "type": "북부교육지원청 학교입찰",
@@ -178,7 +238,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1041762"
   },
   {
-   "no": "3507",
+   "no": "3478",
    "org": "대청중학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -448,7 +508,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1040586"
   },
   {
-   "no": "3503",
+   "no": "3474",
    "org": "기장중학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -643,7 +703,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/nambu/na/ntt/selectNttInfo.do?mi=11864&bbsId=3990&nttSn=1039772"
   },
   {
-   "no": "3501",
+   "no": "3472",
    "org": "센텀초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -703,7 +763,7 @@ window.OFC_BIDS = {
    "url": "https://home.pen.go.kr/dongnae/na/ntt/selectNttInfo.do?mi=11262&bbsId=3632&nttSn=1039094"
   },
   {
-   "no": "3497",
+   "no": "3468",
    "org": "용암초등학교",
    "cat": 2,
    "type": "해운대교육지원청 학교입찰",
@@ -716,21 +776,6 @@ window.OFC_BIDS = {
    "price": null,
    "priceNote": "",
    "url": "https://home.pen.go.kr/haeundae/na/ntt/selectNttInfo.do?mi=11328&bbsId=3536&nttSn=1038872"
-  },
-  {
-   "no": "461",
-   "org": "부산서부교육지원청",
-   "cat": 2,
-   "type": "서부교육지원청 학교입찰",
-   "status": "",
-   "posted": "2026-09-21",
-   "title": "대동중학교 화변기 교체공사 소액수의 견적 제출 안내 공고",
-   "award": "",
-   "open": "2026-09-21",
-   "openText": "2026/09/21 10:00",
-   "price": null,
-   "priceNote": "",
-   "url": "https://home.pen.go.kr/seobu/na/ntt/selectNttInfo.do?mi=9487&bbsId=3989&nttSn=1038511"
   }
  ]
 };
