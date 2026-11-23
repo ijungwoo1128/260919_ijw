@@ -4,21 +4,66 @@ window.PEN_BIDS = {
  "url": "https://www.pen.go.kr/main/na/ntt/selectNttList.do?mi=30514&bbsId=2407",
  "license": "공개 게시판의 제목·기관명·입찰일시만 담음(본문·첨부 제외). 내용은 반드시 원문에서 확인",
  "period": {
-  "from": "2026-08-21",
-  "to": "2026-11-19"
+  "from": "2026-08-25",
+  "to": "2026-11-20"
  },
  "updateNote": "수집할 때마다 갱신",
- "fetched": "2026-11-19",
- "excludedResults": 35,
+ "fetched": "2026-11-23",
+ "excludedResults": 37,
  "rows": [
   {
-   "no": 7861,
+   "no": 7809,
+   "org": "삼성여자고등학교",
+   "cat": 2,
+   "type": "학교입찰",
+   "status": "",
+   "posted": "2026-11-20",
+   "title": "삼성여자고등학교 2026년 12월 학교급식 식자재구매 전자입찰 공고",
+   "award": "",
+   "open": "2026-11-24",
+   "openText": "2026.11.29~2026.11.24",
+   "price": null,
+   "priceNote": "",
+   "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184435"
+  },
+  {
+   "no": 7808,
+   "org": "성모여자고등학교",
+   "cat": 2,
+   "type": "학교입찰",
+   "status": "",
+   "posted": "2026-11-20",
+   "title": "2026학년도 12월~2027년 2월 성모여자고등학교 급식물품 전자입찰(소액수의) 공고",
+   "award": "",
+   "open": "2026-11-25",
+   "openText": "2026.11.25",
+   "price": null,
+   "priceNote": "",
+   "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184429"
+  },
+  {
+   "no": 7806,
+   "org": "부산수영중학교",
+   "cat": 2,
+   "type": "학교입찰",
+   "status": "",
+   "posted": "2026-11-19",
+   "title": "2027학년도 부산수영중학교 신입생 교복(동복, 하복) 학교주관구매 입찰 공고",
+   "award": "",
+   "open": "2026-11-27",
+   "openText": "2026.11.17.(화) 08:00 ~ 2026.11.27.(금) 10:00",
+   "price": null,
+   "priceNote": "",
+   "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184319"
+  },
+  {
+   "no": 7805,
    "org": "남산고등학교",
    "cat": 2,
    "type": "학교입찰",
    "status": "",
    "posted": "2026-11-19",
-   "title": "남산고등학교 12~2월 급식 식재료 구매 수의계약 안내공고 알림 &nbsp;",
+   "title": "남산고등학교 12~2월 급식 식재료 구매 수의계약 안내공고 알림",
    "award": "",
    "open": "2026-11-25",
    "openText": "2026.11.25.",
@@ -27,13 +72,13 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184311"
   },
   {
-   "no": 7860,
+   "no": 7804,
    "org": "동래고등학교",
    "cat": 2,
    "type": "학교입찰",
    "status": "",
    "posted": "2026-11-18",
-   "title": "2027학년도 동래고등학교 2학년 현장체험학습(수학여행) 위탁 용역 입찰 공고 &nbsp;",
+   "title": "2027학년도 동래고등학교 2학년 현장체험학습(수학여행) 위탁 용역 입찰 공고",
    "award": "",
    "open": "2026-12-09",
    "openText": "2026.12.3.(목) 10:00 ~ 12.9.(수) 11:00",
@@ -42,13 +87,13 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184273"
   },
   {
-   "no": 7859,
+   "no": 7803,
    "org": "양정고등학교",
    "cat": 2,
    "type": "학교입찰",
    "status": "",
    "posted": "2026-11-18",
-   "title": "양정고등학교 2026년 12월, 2027년 2월 학교급식 식재료 전자입찰 소액수의 &nbsp;",
+   "title": "양정고등학교 2026년 12월, 2027년 2월 학교급식 식재료 전자입찰 소액수의",
    "award": "",
    "open": "2026-11-24",
    "openText": "2026년 11월 18일(수)14:00~2026년 11월 24일(화)09:00",
@@ -57,7 +102,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184258"
   },
   {
-   "no": 7858,
+   "no": 7802,
    "org": "부산센텀여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -72,7 +117,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184221"
   },
   {
-   "no": 7857,
+   "no": 7801,
    "org": "경남고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -87,7 +132,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184182"
   },
   {
-   "no": 7856,
+   "no": 7800,
    "org": "명호고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -102,7 +147,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184173"
   },
   {
-   "no": 7855,
+   "no": 7799,
    "org": "해동고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -117,7 +162,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1184137"
   },
   {
-   "no": 7854,
+   "no": 7798,
    "org": "부산장안고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -132,7 +177,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1183973"
   },
   {
-   "no": 7853,
+   "no": 7797,
    "org": "부산진여자중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -147,7 +192,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1183765"
   },
   {
-   "no": 7851,
+   "no": 7795,
    "org": "대광고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -162,7 +207,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1183219"
   },
   {
-   "no": 7850,
+   "no": 7794,
    "org": "덕문여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -177,7 +222,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1183198"
   },
   {
-   "no": 7849,
+   "no": 7793,
    "org": "일광중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -192,7 +237,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1183185"
   },
   {
-   "no": 7845,
+   "no": 7789,
    "org": "일광중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -207,7 +252,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182874"
   },
   {
-   "no": 7844,
+   "no": 7788,
    "org": "금사중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -222,7 +267,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182866"
   },
   {
-   "no": 7842,
+   "no": 7786,
    "org": "덕문고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -237,7 +282,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182767"
   },
   {
-   "no": 7841,
+   "no": 7785,
    "org": "사직여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -252,7 +297,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182701"
   },
   {
-   "no": 7839,
+   "no": 7783,
    "org": "성모여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -267,7 +312,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182687"
   },
   {
-   "no": 7838,
+   "no": 7782,
    "org": "삼성여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -282,7 +327,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182678"
   },
   {
-   "no": 7837,
+   "no": 7781,
    "org": "동아공업고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -297,7 +342,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182634"
   },
   {
-   "no": 7836,
+   "no": 7780,
    "org": "동아공업고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -312,7 +357,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182633"
   },
   {
-   "no": 7835,
+   "no": 7779,
    "org": "부산센텀여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -327,7 +372,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182623"
   },
   {
-   "no": 7833,
+   "no": 7777,
    "org": "성도고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -342,7 +387,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182521"
   },
   {
-   "no": 7832,
+   "no": 7776,
    "org": "부산센텀여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -357,7 +402,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182513"
   },
   {
-   "no": 7828,
+   "no": 7772,
    "org": "배정미래고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -372,7 +417,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182493"
   },
   {
-   "no": 7827,
+   "no": 7771,
    "org": "동천고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -387,7 +432,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182492"
   },
   {
-   "no": 7826,
+   "no": 7770,
    "org": "동천고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -402,7 +447,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182489"
   },
   {
-   "no": 7825,
+   "no": 7769,
    "org": "동천고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -417,7 +462,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182488"
   },
   {
-   "no": 7824,
+   "no": 7768,
    "org": "동천고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -432,7 +477,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182486"
   },
   {
-   "no": 7822,
+   "no": 7766,
    "org": "성일여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -447,7 +492,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182448"
   },
   {
-   "no": 7821,
+   "no": 7765,
    "org": "삼성여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -462,7 +507,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182433"
   },
   {
-   "no": 7820,
+   "no": 7764,
    "org": "남산고등확교",
    "cat": 2,
    "type": "학교입찰",
@@ -477,7 +522,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182393"
   },
   {
-   "no": 7818,
+   "no": 7762,
    "org": "부산장안고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -492,7 +537,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182195"
   },
   {
-   "no": 7816,
+   "no": 7760,
    "org": "성모여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -507,7 +552,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182171"
   },
   {
-   "no": 7815,
+   "no": 7759,
    "org": "감만중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -522,7 +567,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182135"
   },
   {
-   "no": 7814,
+   "no": 7758,
    "org": "해동고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -537,7 +582,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182127"
   },
   {
-   "no": 7813,
+   "no": 7757,
    "org": "부산진여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -552,7 +597,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182119"
   },
   {
-   "no": 7812,
+   "no": 7756,
    "org": "부산센텀여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -567,7 +612,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182118"
   },
   {
-   "no": 7811,
+   "no": 7755,
    "org": "명호고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -582,7 +627,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182114"
   },
   {
-   "no": 7810,
+   "no": 7754,
    "org": "남산고등학교 11월 급식 식재료 구매 수의계약 안내공고 알림",
    "cat": 2,
    "type": "학교입찰",
@@ -597,7 +642,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182083"
   },
   {
-   "no": 7809,
+   "no": 7753,
    "org": "양정고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -612,7 +657,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182066"
   },
   {
-   "no": 7808,
+   "no": 7752,
    "org": "해연여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -627,7 +672,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1182065"
   },
   {
-   "no": 7806,
+   "no": 7750,
    "org": "해연여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -642,7 +687,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181974"
   },
   {
-   "no": 7805,
+   "no": 7749,
    "org": "대덕여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -657,7 +702,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181908"
   },
   {
-   "no": 7804,
+   "no": 7748,
    "org": "경남고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -672,7 +717,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181735"
   },
   {
-   "no": 7803,
+   "no": 7747,
    "org": "사상고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -687,7 +732,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181710"
   },
   {
-   "no": 7802,
+   "no": 7746,
    "org": "분포고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -702,7 +747,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181597"
   },
   {
-   "no": 7800,
+   "no": 7744,
    "org": "동평여자중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -717,7 +762,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181542"
   },
   {
-   "no": 7797,
+   "no": 7741,
    "org": "경혜여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -732,7 +777,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181292"
   },
   {
-   "no": 7796,
+   "no": 7740,
    "org": "경남고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -747,7 +792,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181089"
   },
   {
-   "no": 7795,
+   "no": 7739,
    "org": "혜화여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -762,7 +807,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1181033"
   },
   {
-   "no": 7794,
+   "no": 7738,
    "org": "동평여자중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -777,7 +822,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180924"
   },
   {
-   "no": 7792,
+   "no": 7736,
    "org": "동주여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -792,7 +837,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180899"
   },
   {
-   "no": 7791,
+   "no": 7735,
    "org": "동래고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -807,7 +852,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180813"
   },
   {
-   "no": 7790,
+   "no": 7734,
    "org": "성모여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -822,7 +867,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180804"
   },
   {
-   "no": 7787,
+   "no": 7731,
    "org": "남산고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -837,7 +882,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180730"
   },
   {
-   "no": 7785,
+   "no": 7729,
    "org": "삼성여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -852,7 +897,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180685"
   },
   {
-   "no": 7782,
+   "no": 7726,
    "org": "대동고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -867,7 +912,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180571"
   },
   {
-   "no": 7781,
+   "no": 7725,
    "org": "부산국제고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -882,7 +927,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180567"
   },
   {
-   "no": 7779,
+   "no": 7723,
    "org": "경혜여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -897,7 +942,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180547"
   },
   {
-   "no": 7778,
+   "no": 7722,
    "org": "성일여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -912,7 +957,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180543"
   },
   {
-   "no": 7777,
+   "no": 7721,
    "org": "삼성여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -927,7 +972,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180440"
   },
   {
-   "no": 7776,
+   "no": 7720,
    "org": "덕원중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -942,7 +987,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180423"
   },
   {
-   "no": 7775,
+   "no": 7719,
    "org": "남산고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -957,7 +1002,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180382"
   },
   {
-   "no": 7774,
+   "no": 7718,
    "org": "해동고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -972,7 +1017,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180374"
   },
   {
-   "no": 7773,
+   "no": 7717,
    "org": "성모여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -987,7 +1032,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180361"
   },
   {
-   "no": 7772,
+   "no": 7716,
    "org": "부산남고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1002,7 +1047,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180357"
   },
   {
-   "no": 7771,
+   "no": 7715,
    "org": "부산센텀여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1017,7 +1062,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180264"
   },
   {
-   "no": 7770,
+   "no": 7714,
    "org": "명호고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1032,7 +1077,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180261"
   },
   {
-   "no": 7769,
+   "no": 7713,
    "org": "양정고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1047,7 +1092,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180236"
   },
   {
-   "no": 7768,
+   "no": 7712,
    "org": "해연여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1062,7 +1107,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180202"
   },
   {
-   "no": 7766,
+   "no": 7710,
    "org": "부산진여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1077,7 +1122,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180194"
   },
   {
-   "no": 7764,
+   "no": 7708,
    "org": "경혜여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1092,7 +1137,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1180090"
   },
   {
-   "no": 7763,
+   "no": 7707,
    "org": "영남중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1107,7 +1152,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179947"
   },
   {
-   "no": 7762,
+   "no": 7706,
    "org": "동해중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1122,7 +1167,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179822"
   },
   {
-   "no": 7759,
+   "no": 7703,
    "org": "부산해군과학기술고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1137,7 +1182,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179295"
   },
   {
-   "no": 7758,
+   "no": 7702,
    "org": "부산해군과학기술고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1152,7 +1197,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179293"
   },
   {
-   "no": 7757,
+   "no": 7701,
    "org": "오션중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1167,7 +1212,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179240"
   },
   {
-   "no": 7756,
+   "no": 7700,
    "org": "오션중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1182,7 +1227,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179204"
   },
   {
-   "no": 7755,
+   "no": 7699,
    "org": "부산장안고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1197,7 +1242,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179186"
   },
   {
-   "no": 7754,
+   "no": 7698,
    "org": "송도중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1212,7 +1257,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179096"
   },
   {
-   "no": 7752,
+   "no": 7696,
    "org": "동주여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1227,7 +1272,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1179035"
   },
   {
-   "no": 7751,
+   "no": 7695,
    "org": "영남중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1242,7 +1287,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178993"
   },
   {
-   "no": 7749,
+   "no": 7693,
    "org": "삼성여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1257,7 +1302,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178945"
   },
   {
-   "no": 7748,
+   "no": 7692,
    "org": "광명고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1272,7 +1317,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178896"
   },
   {
-   "no": 7746,
+   "no": 7690,
    "org": "오션중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1287,7 +1332,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178871"
   },
   {
-   "no": 7745,
+   "no": 7689,
    "org": "상당중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1302,7 +1347,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178864"
   },
   {
-   "no": 7741,
+   "no": 7685,
    "org": "남산고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1317,7 +1362,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178813"
   },
   {
-   "no": 7740,
+   "no": 7684,
    "org": "부산여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1332,7 +1377,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178744"
   },
   {
-   "no": 7739,
+   "no": 7683,
    "org": "영남중학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1347,7 +1392,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178724"
   },
   {
-   "no": 7738,
+   "no": 7682,
    "org": "삼성여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1362,7 +1407,7 @@ window.PEN_BIDS = {
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178715"
   },
   {
-   "no": 7737,
+   "no": 7681,
    "org": "성모여자고등학교",
    "cat": 2,
    "type": "학교입찰",
@@ -1375,36 +1420,6 @@ window.PEN_BIDS = {
    "price": null,
    "priceNote": "",
    "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178709"
-  },
-  {
-   "no": 7735,
-   "org": "영도제일중학교",
-   "cat": 2,
-   "type": "학교입찰",
-   "status": "",
-   "posted": "2026-08-24",
-   "title": "2027학년도 영도제일중학교 교복(동복, 생활복) 학교주관구매 입찰 재공고",
-   "award": "",
-   "open": "2026-09-04",
-   "openText": "2026. 8. 25.(화) 09:00~2026. 9. 4.(금) 15:00",
-   "price": null,
-   "priceNote": "",
-   "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178604"
-  },
-  {
-   "no": 7734,
-   "org": "성일여자고등학교",
-   "cat": 2,
-   "type": "학교입찰",
-   "status": "",
-   "posted": "2026-08-21",
-   "title": "2026년 9월 성일여자고등학교 급식 식자재 소액수의 입찰공고",
-   "award": "",
-   "open": "2026-08-26",
-   "openText": "2026-08-21 15시00분 ~ 2026-08-26 14시00분",
-   "price": null,
-   "priceNote": "",
-   "url": "https://www.pen.go.kr/main/na/ntt/selectNttInfo.do?mi=30514&bbsId=2407&nttSn=1178527"
   }
  ]
 };
